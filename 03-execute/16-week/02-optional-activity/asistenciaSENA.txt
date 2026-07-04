@@ -1,0 +1,180 @@
+====================================================================
+SISTEMA DE TOMA DE ASISTENCIA PARA SOFIA PLUS
+====================================================================
+
+1. OBJETIVO DEL SISTEMA
+--------------------------------------------------------------------
+Agilizar y simplificar el proceso de registro de asistencia de los
+aprendices, reduciendo el tiempo que toma pasar lista de forma manual
+y disminuyendo los errores en el registro, mediante el uso de codigos QR.
+
+
+2. RECOLECCION DE INFORMACION
+--------------------------------------------------------------------
+Para conocer el problema y definir los requisitos del sistema, se
+utilizaron los siguientes metodos sencillos de recoleccion de
+informacion:
+
+- Observación directa: se observo el proceso actual en el que el instructor
+  llama a cada aprendiz por su nombre o pasa una lista fisica para
+  registrar la asistencia, notando que este proceso toma varios
+  minutos de la clase.
+
+- Entrevistas: se realizaron preguntas cortas a un instructor sobre
+  como registra actualmente la asistencia y que dificultades
+  encuentra (aprendices que llegan tarde, listas que se pierden,
+  tiempo perdido).
+
+- Encuestas: se aplico una pequena encuesta a algunos aprendices para
+  saber si estarian de acuerdo con registrar su asistencia usando un
+  codigo QR desde su celular.
+
+Con esta informacion se identifico que el mayor problema es la perdida
+de tiempo y los errores humanos al registrar la asistencia de forma
+manual, lo cual justifica la necesidad del sistema.
+
+
+3. REQUISITOS FUNCIONALES (RF)
+--------------------------------------------------------------------
+RF-01: El sistema debe permitir registrar la asistencia de un aprendiz
+       mediante la lectura de un codigo QR o un codigo unico.
+
+RF-02: El sistema debe registrar automaticamente la fecha y la hora en
+       que se realiza la asistencia.
+
+RF-03: El sistema debe permitir al instructor consultar la lista de
+       aprendices que asistieron en una fecha especifica.
+
+RF-04: El sistema debe evitar el registro de asistencia duplicada del
+       mismo aprendiz en la misma clase.
+
+RF-05: El sistema debe permitir generar un reporte simple de
+       asistencia por ficha o por fecha.
+
+RF-06: El sistema debe mostrar un mensaje de confirmacion cuando la
+       asistencia se registre correctamente.
+
+
+4. ACTORES DEL SISTEMA
+--------------------------------------------------------------------
+Aprendiz:
+   Persona en formacion que asiste a las clases. Registra su propia
+   asistencia usando el codigo QR.
+
+Instructor:
+   Persona encargada de dictar la clase. Consulta y verifica la
+   asistencia registrada.
+
+
+5. CASOS DE USO
+--------------------------------------------------------------------
+
+5.1 Registrar asistencia
+   Actor: Aprendiz
+   Descripcion: Permite que el aprendiz registre su asistencia a
+   clase de forma rapida usando un codigo QR.
+   Flujo basico:
+      1. El aprendiz llega al salon.
+      2. El aprendiz escanea el codigo QR de la clase o presenta su
+         codigo personal.
+      3. El sistema guarda la fecha y hora del registro.
+      4. El sistema muestra un mensaje de asistencia registrada.
+
+5.2 Consultar asistencia
+   Actor: Instructor
+   Descripcion: Permite al instructor ver quienes asistieron a una
+   clase en una fecha determinada.
+   Flujo basico:
+      1. El instructor selecciona la ficha y la fecha.
+      2. El sistema muestra la lista de aprendices con su estado de
+         asistencia.
+
+5.3 Generar reporte de asistencia
+   Actor: Instructor
+   Descripcion: Permite al instructor obtener un resumen de la
+   asistencia de una ficha en un rango de fechas.
+   Flujo basico:
+      1. El instructor solicita el reporte indicando ficha y periodo.
+      2. El sistema procesa los registros guardados.
+      3. El sistema muestra el reporte con el total de asistencias
+         por aprendiz.
+
+
+6. DIAGRAMA DE CLASES SIMPLE
+--------------------------------------------------------------------
+A continuacion se representa, en forma de texto, el diagrama de
+clases basico con las tres clases principales del sistema:
+
+   +----------------------+
+   |      Instructor      |
+   +----------------------+
+   | - idInstructor       |
+   | - nombre             |
+   | - ficha              |
+   +----------------------+
+   | + generarReporte()   |
+   +----------------------+
+             | 1
+             |
+             | 0..*
+   +----------------------+
+   |       Aprendiz       |
+   +----------------------+
+   | - idAprendiz         |
+   | - nombre             |
+   | - codigoQR           |
+   | - ficha              |
+   +----------------------+
+   | + registrarAsistencia()|
+   +----------------------+
+             | 1
+             |
+             | 0..*
+   +----------------------+
+   |      Asistencia      |
+   +----------------------+
+   | - idAsistencia       |
+   | - fecha              |
+   | - hora               |
+   | - estado             |
+   +----------------------+
+   | + consultarAsistencia()|
+   +----------------------+
+
+Relaciones:
+- Un Instructor tiene muchos Aprendices (1 a 0..*).
+- Un Aprendiz registra muchas Asistencias (1 a 0..*).
+
+
+7. DIAGRAMA DE CASOS DE USO (UML)
+--------------------------------------------------------------------
+A continuacion se representa, en forma de texto, el diagrama de casos
+de uso del sistema, mostrando los actores, los casos de uso y las
+relaciones entre ellos:
+
+                     SISTEMA DE ASISTENCIA
+        +--------------------------------------------+
+        |                                            |
+        |          ( Registrar asistencia )          |
+        |                                            |
+        |          ( Consultar asistencia )          |
+        |                                            |
+        |       ( Generar reporte de asistencia )     |
+        |                                            |
+        +--------------------------------------------+
+
+     O                                              O
+    /|\   -------- Registrar asistencia            /|\
+    / \                                             / \
+ APRENDIZ                                       INSTRUCTOR
+                                                     |
+                                                     +---- Consultar asistencia
+                                                     |
+                                                     +---- Generar reporte de asistencia
+
+Relaciones:
+- Aprendiz -----------------> Registrar asistencia
+- Instructor ---------------> Consultar asistencia
+- Instructor ---------------> Generar reporte de asistencia
+
+
