@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mockup Mejorado — Control de Asistencia Académica</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --ion-color-primary:#1971c2;
+    --ion-color-primary-shade:#1864ab;
+    --ion-color-primary-tint:#339af0;
+
+    --surface-0:#dde5f0;
+    --surface-1:#f5f8ff;
+    --surface-2:#e8eef8;
+    --surface-border:#c8d5e8;
+
+    --accent-blue:#1971c2;
+    --accent-green:#2f9e44;
+    --accent-violet:#7048e8;
+    --accent-teal:#0c8599;
+    --accent-orange:#e67700;
+
+    --success-bg:#d3f9d8; --success-border:#69db7c; --success-text:#2b8a3e;
+    --danger-bg:#ffe3e3;  --danger-border:#ff8787;  --danger-text:#c92a2a;
+    --warning-bg:#fff3bf; --warning-border:#ffd43b; --warning-text:#e67700;
+    --neutral-bg:#e9ecef; --neutral-border:#ced4da; --neutral-text:#495057;
+
+    --fs-xs:11px; --fs-sm:12px; --fs-base:14px; --fs-md:15px;
+    --fs-lg:17px; --fs-xl:20px; --fs-2xl:24px; --fs-3xl:28px;
+
+    --sp-xs:4px; --sp-sm:8px; --sp-md:16px; --sp-lg:24px; --sp-xl:32px;
+
+    --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:20px; --r-full:9999px;
+
+    --shadow-sm: 0 1px 3px rgba(15,30,60,.08);
+    --shadow-md: 0 4px 14px rgba(15,30,60,.12);
+    --shadow-lg: 0 12px 32px rgba(15,30,60,.18);
+    --shadow-colored: 0 8px 20px rgba(25,113,194,.28);
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; font-family:'Inter',system-ui,sans-serif;
+    background: linear-gradient(180deg,#eef2f9 0%, #e3e9f4 100%);
+    color:#1b2436;
+    min-height:100vh;
+  }
+
+  .page-wrap{ max-width:1180px; margin:0 auto; padding: var(--sp-lg) var(--sp-md) 60px; }
+
+  .intro{ text-align:center; margin-bottom: var(--sp-lg); }
+  .intro .eyebrow{
+    font-size:var(--fs-xs); font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ion-color-primary-shade); margin-bottom:6px;
+  }
+  .intro h1{ font-size: 26px; font-weight:800; margin:0 0 6px; color:#0f1e3d;}
+  .intro p{ font-size:var(--fs-md); color:#5b6478; max-width:640px; margin:0 auto; }
+
+  /* Tabs */
+  .tabs{
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center;
+    margin: var(--sp-lg) 0;
+  }
+  .tab-btn{
+    border:1px solid var(--surface-border); background:var(--surface-1);
+    color:#39445c; font-family:inherit; font-size:var(--fs-sm); font-weight:600;
+    padding:9px 16px; border-radius:var(--r-full); cursor:pointer;
+    transition: all .15s ease;
+  }
+  .tab-btn:hover{ border-color: var(--ion-color-primary-tint); }
+  .tab-btn.active{
+    background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-shade));
+    color:white; border-color:transparent; box-shadow: var(--shadow-colored);
+  }
+
+  .stage{ display:flex; justify-content:center; gap:32px; align-items:flex-start; flex-wrap:wrap; }
+
+  .note{
+    max-width:280px; background:var(--surface-1); border:1px solid var(--surface-border);
+    border-radius:var(--r-lg); padding:var(--sp-md); font-size:var(--fs-sm); color:#4a5468;
+    box-shadow: var(--shadow-sm);
+  }
+  .note h3{ margin:0 0 8px; font-size:var(--fs-base); color:#0f1e3d; font-weight:700; }
+  .note ul{ margin:0; padding-left:18px; }
+  .note li{ margin-bottom:6px; }
+  .note b{ color: var(--ion-color-primary-shade); }
+
+  /* Phone frame */
+  .phone{
+    width:340px; height:718px; background:#0d1220; border-radius:44px;
+    padding:12px; box-shadow: var(--shadow-lg); position:relative; flex-shrink:0;
+  }
+  .phone .notch{
+    position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    width:120px; height:22px; background:#0d1220; border-radius:0 0 14px 14px; z-index:5;
+  }
+  .screen{
+    width:100%; height:100%; background:var(--surface-0);
+    border-radius:34px; overflow:hidden; position:relative;
+    display:flex; flex-direction:column;
+    font-size:var(--fs-base);
+  }
+  .screen-scroll{ flex:1; overflow-y:auto; padding-bottom: var(--sp-md); }
+  .screen-scroll::-webkit-scrollbar{ width:0; }
+
+  /* Header component */
+  .app-header{
+    background: linear-gradient(135deg, var(--ion-color-primary-tint) 0%, var(--ion-color-primary) 55%, var(--ion-color-primary-shade) 100%);
+    color:white; padding: 30px var(--sp-md) var(--sp-md);
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .app-header .title-row{ display:flex; align-items:center; gap:8px; }
+  .app-header .title-row .badge-dot{
+    width:8px; height:8px; border-radius:50%; background:#69db7c; box-shadow:0 0 0 3px rgba(255,255,255,.25);
+  }
+  .app-header h2{ margin:0; font-size:var(--fs-xl); font-weight:800; letter-spacing:-.2px; }
+  .app-header .subtitle{ font-size:var(--fs-sm); opacity:.85; font-weight:500; }
+
+  .content{ padding: var(--sp-md); }
+
+  /* Generic card */
+  .card{
+    background:var(--surface-1); border:1px solid var(--surface-border);
+    border-radius:var(--r-lg); padding:var(--sp-md); box-shadow:var(--shadow-sm);
+  }
+
+  /* ---------- BackendConfigPage (onboarding) ---------- */
+  .step-row{ display:flex; gap:10px; margin-bottom:14px; }
+  .step-num{
+    width:26px; height:26px; border-radius:50%; background:var(--ion-color-primary);
+    color:white; font-size:var(--fs-sm); font-weight:700; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .step-num.done{ background:var(--accent-green); }
+  .step-text b{ display:block; font-size:var(--fs-md); font-weight:700; color:#0f1e3d; }
+  .step-text span{ font-size:var(--fs-sm); color:#5b6478; }
+
+  .field-label{ font-size:var(--fs-sm); font-weight:600; color:#39445c; margin:0 0 6px; display:block; }
+  .field{
+    width:100%; padding:12px 14px; border-radius:var(--r-md); border:1.5px solid var(--surface-border);
+    background:white; font-size:var(--fs-base); font-family:inherit; margin-bottom:12px;
+  }
+  .field:focus{ outline:none; border-color:var(--ion-color-primary); }
+
+  .status-pill{
+    display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:var(--r-full);
+    font-size:var(--fs-xs); font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+  }
+  .status-pill.success{ background:var(--success-bg); border:1px solid var(--success-border); color:var(--success-text); }
+  .status-pill.pending{ background:var(--neutral-bg); border:1px solid var(--neutral-border); color:var(--neutral-text); }
+  .status-pill .dot{ width:6px; height:6px; border-radius:50%; background:currentColor; }
+
+  .btn-primary{
+    width:100%; padding:13px; border-radius:var(--r-md); border:none;
+    background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-shade));
+    color:white; font-weight:700; font-size:var(--fs-md); font-family:inherit; cursor:pointer;
+    box-shadow: var(--shadow-colored); display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .btn-outline{
+    width:100%; padding:13px; border-radius:var(--r-md); border:1.5px solid var(--ion-color-primary);
+    background:transparent; color:var(--ion-color-primary); font-weight:700; font-size:var(--fs-md); font-family:inherit; cursor:pointer;
+  }
+  .spinner{
+    width:14px; height:14px; border-radius:50%; border:2px solid rgba(255,255,255,.5); border-top-color:white;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ---------- InstitutionPage ---------- */
+  .inst-tile{
+    border-radius:var(--r-lg); overflow:hidden; background:var(--surface-1); border:1px solid var(--surface-border);
+    box-shadow:var(--shadow-sm); margin-bottom:14px; display:flex; align-items:center; gap:12px;
+  }
+  .inst-tile .head{
+    width:64px; align-self:stretch; display:flex; align-items:center; justify-content:center;
+    color:white; font-weight:800; font-size:20px; flex-shrink:0;
+  }
+  .inst-tile .body{ padding:12px 14px 12px 0; flex:1; }
+  .inst-tile .body h4{ margin:0 0 2px; font-size:var(--fs-md); font-weight:700; color:#0f1e3d; }
+  .inst-tile .body p{ margin:0; font-size:var(--fs-sm); color:#5b6478; }
+  .inst-tile .body .meta{ margin-top:6px; display:flex; gap:6px; }
+  .chip{
+    font-size:var(--fs-xs); font-weight:700; padding:3px 9px; border-radius:var(--r-full);
+    background:var(--surface-2); color:#39445c; border:1px solid var(--surface-border);
+  }
+
+  /* ---------- UnitSelectionPage ---------- */
+  .unit-row{
+    display:flex; align-items:center; gap:12px; background:var(--surface-1); border:1.5px solid var(--surface-border);
+    border-radius:var(--r-md); padding:12px; margin-bottom:10px;
+  }
+  .unit-row.selected{ border-color:var(--ion-color-primary); background:#eaf3fd; }
+  .unit-row .type-chip{
+    font-size:9px; font-weight:800; text-transform:uppercase; padding:3px 7px; border-radius:6px; color:white;
+    flex-shrink:0;
+  }
+  .unit-row .info{ flex:1; }
+  .unit-row .info b{ display:block; font-size:var(--fs-base); color:#0f1e3d; }
+  .unit-row .info span{ font-size:var(--fs-xs); color:#5b6478; }
+  .unit-row .check{
+    width:22px; height:22px; border-radius:50%; border:2px solid var(--surface-border); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .unit-row.selected .check{ background:var(--ion-color-primary); border-color:var(--ion-color-primary); color:white; font-size:12px; }
+
+  /* ---------- DashboardPage ---------- */
+  .hero-status{
+    background:linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
+    border:1px solid rgba(255,255,255,.3); border-radius:var(--r-md); padding:10px 12px; margin-top:10px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .hero-status span{ font-size:var(--fs-xs); opacity:.9; }
+  .hero-status b{ font-size:var(--fs-sm); }
+
+  .section-label{ font-size:var(--fs-xs); font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:#5b6478; margin: var(--sp-md) 0 8px; }
+  .action-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .action-card{
+    background:var(--surface-1); border:1px solid var(--surface-border); border-radius:var(--r-lg);
+    padding:14px; box-shadow:var(--shadow-sm);
+  }
+  .action-card .icon{
+    width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    color:white; font-size:16px; margin-bottom:8px;
+  }
+  .action-card b{ display:block; font-size:var(--fs-base); color:#0f1e3d; }
+  .action-card span{ font-size:var(--fs-xs); color:#5b6478; }
+
+  .warn-banner{
+    background:var(--warning-bg); border:1px solid var(--warning-border); color:var(--warning-text);
+    border-radius:var(--r-md); padding:10px 12px; font-size:var(--fs-sm); font-weight:600;
+    display:flex; gap:8px; align-items:center; margin-top:12px;
+  }
+
+  /* ---------- SessionPage ---------- */
+  .roomcode-hero{
+    background:linear-gradient(160deg, var(--accent-violet), #4c2889);
+    border-radius:var(--r-xl); padding:var(--sp-lg) var(--sp-md); text-align:center; color:white;
+    box-shadow: 0 10px 26px rgba(112,72,232,.35); margin-bottom:14px;
+  }
+  .roomcode-hero .eyebrow{ font-size:var(--fs-xs); font-weight:700; text-transform:uppercase; opacity:.8; letter-spacing:.1em; }
+  .roomcode-hero .code{
+    font-size:38px; font-weight:800; letter-spacing:8px; margin:8px 0; font-variant-numeric:tabular-nums;
+  }
+  .roomcode-hero .ring{
+    width:44px; height:44px; border-radius:50%; margin:0 auto 6px;
+    background: conic-gradient(white 0 72%, rgba(255,255,255,.25) 72% 100%);
+    display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#4c2889;
+  }
+  .ring-inner{ width:36px; height:36px; border-radius:50%; background:#5a2fa8; display:flex; align-items:center; justify-content:center; color:white; }
+
+  .qr-panel{
+    background:white; border-radius:var(--r-lg); padding:18px; text-align:center; box-shadow:var(--shadow-md);
+    border:1px solid var(--surface-border); margin-bottom:14px;
+  }
+  .qr-fake{
+    width:150px; height:150px; margin:0 auto 10px; background:
+      repeating-linear-gradient(0deg,#0f1e3d 0 6px, transparent 6px 12px),
+      repeating-linear-gradient(90deg,#0f1e3d 0 6px, transparent 6px 12px);
+    background-blend-mode:multiply; border-radius:8px; position:relative;
+  }
+  .qr-fake::before, .qr-fake::after{
+    content:''; position:absolute; width:28px; height:28px; border:6px solid #0f1e3d; top:8px; left:8px;
+  }
+  .qr-fake::after{ left:auto; right:8px; }
+
+  .stepper{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding:0 4px; }
+  .stepper .st{ display:flex; flex-direction:column; align-items:center; gap:6px; flex:1; }
+  .stepper .st .dot{ width:22px; height:22px; border-radius:50%; background:var(--surface-border); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#5b6478; }
+  .stepper .st.active .dot{ background:var(--ion-color-primary); color:white; }
+  .stepper .st span{ font-size:10px; font-weight:600; color:#5b6478; text-align:center; }
+  .stepper .line{ flex:1; height:2px; background:var(--surface-border); margin-bottom:22px; }
+
+  /* ---------- CheckinPage ---------- */
+  .instruction-banner{
+    background:var(--surface-2); border:1px solid var(--surface-border); border-left:4px solid var(--ion-color-primary);
+    border-radius:var(--r-md); padding:10px 12px; font-size:var(--fs-sm); color:#39445c; margin-bottom:14px;
+    display:flex; gap:8px;
+  }
+  .otp-row{ display:flex; gap:8px; justify-content:center; margin:16px 0; }
+  .otp-box{
+    width:38px; height:46px; border-radius:var(--r-sm); border:2px solid var(--surface-border);
+    background:white; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; color:#0f1e3d;
+  }
+  .otp-box.filled{ border-color:var(--ion-color-primary); background:#eaf3fd; }
+  .session-context{ display:flex; gap:10px; align-items:center; background:var(--surface-1); border:1px solid var(--surface-border); border-radius:var(--r-md); padding:10px 12px; margin-bottom:12px; }
+  .session-context .av{ width:32px; height:32px; border-radius:8px; background:var(--accent-blue); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0; }
+  .session-context b{ display:block; font-size:var(--fs-sm); color:#0f1e3d; }
+  .session-context span{ font-size:var(--fs-xs); color:#5b6478; }
+
+  .result-banner{
+    border-radius:var(--r-lg); padding:16px; text-align:center; font-weight:700; font-size:var(--fs-lg);
+    background:var(--success-bg); border:1.5px solid var(--success-border); color:var(--success-text);
+  }
+  .result-banner span{ display:block; font-size:var(--fs-sm); font-weight:500; margin-top:4px; }
+
+  /* ---------- ResultsPage ---------- */
+  .metric-card{
+    display:flex; justify-content:space-between; align-items:center; background:var(--surface-1);
+    border-radius:var(--r-md); padding:12px 14px; margin-bottom:8px; border-left:4px solid var(--surface-border);
+  }
+  .metric-card b{ font-size:18px; }
+  .metric-card span{ font-size:var(--fs-sm); color:#5b6478; }
+  .metric-card.success{ border-left-color:var(--success-border); }
+  .metric-card.danger{ border-left-color:var(--danger-border); }
+  .metric-card.warning{ border-left-color:var(--warning-border); }
+  .progress-bar{ height:8px; border-radius:var(--r-full); background:var(--surface-2); overflow:hidden; margin:10px 0 14px; }
+  .progress-bar .fill{ height:100%; background: linear-gradient(90deg, var(--accent-green), #40c057); }
+  .btn-export{
+    width:100%; padding:12px; border-radius:var(--r-md); border:none; background:var(--accent-teal); color:white;
+    font-weight:700; font-size:var(--fs-md); font-family:inherit; cursor:pointer; box-shadow: var(--shadow-md);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+
+  /* ---------- HistoryPage ---------- */
+  .history-group-label{ font-size:var(--fs-xs); font-weight:800; text-transform:uppercase; color:var(--ion-color-primary-shade); letter-spacing:.06em; margin:14px 0 8px; }
+  .history-row{ display:flex; gap:12px; align-items:center; background:var(--surface-1); border:1px solid var(--surface-border); border-radius:var(--r-md); padding:10px 12px; margin-bottom:8px; }
+  .history-row .icon{ width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; color:white; font-size:14px; flex-shrink:0; }
+  .history-row .info{ flex:1; }
+  .history-row .info b{ display:block; font-size:var(--fs-base); color:#0f1e3d; }
+  .history-row .info span{ font-size:var(--fs-xs); color:#5b6478; }
+  .history-row .count{ font-size:var(--fs-sm); font-weight:700; color:#39445c; }
+
+  /* small icon helper (unicode) */
+  .ic{ font-style:normal; }
+
+  footer.credit{ text-align:center; margin-top:40px; font-size:var(--fs-xs); color:#8a93a8; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="intro">
+    <div class="eyebrow">Proyecto · Control de Asistencia Académica</div>
+    <h1>Mockup mejorado</h1>
+    <p>Rediseño visual basado en el audit UI/UX y la guía de dirección visual del proyecto: paleta institucional, tokens de espaciado/tipografía y las recomendaciones priorizadas para cada pantalla.</p>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="stage">
+    <div class="note" id="note-left"></div>
+    <div class="phone"><div class="notch"></div><div class="screen" id="screen"></div></div>
+    <div class="note" id="note-right"></div>
+  </div>
+
+  <footer class="credit">Mockup estático de referencia · construido sobre los tokens de <b>visual-direction.md</b></footer>
+</div>
+
+<script>
+const screens = {
+
+login: {
+  label: "Login",
+  notes: {
+    left: { title:"Antes", items:[
+      "Ícono genérico (bookOutline) sin relación con “asistencia”",
+      "IonList dentro de card: mezcla de estilos",
+    ]},
+    right: { title:"Cambios", items:[
+      "Ícono de check institucional en el hero",
+      "Card única, inputs consistentes con el design system",
+      "Microcopy más orientativo",
+    ]}
+  },
+  html: `
+    <div class="app-header" style="padding-bottom:40px;">
+      <div class="title-row"><span class="badge-dot"></span><h2>Asistencia</h2></div>
+      <div class="subtitle">Control académico SENA · CORHUILA</div>
+    </div>
+    <div class="content" style="margin-top:-24px;">
+      <div class="card" style="text-align:center; margin-bottom:16px;">
+        <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--ion-color-primary),var(--ion-color-primary-shade));margin:-40px auto 12px;display:flex;align-items:center;justify-content:center;color:white;font-size:26px;box-shadow:var(--shadow-colored);">✓</div>
+        <b style="font-size:var(--fs-lg);color:#0f1e3d;">Bienvenido de nuevo</b>
+        <p style="font-size:var(--fs-sm);color:#5b6478;margin:4px 0 0;">Ingresa con tu número de documento para registrar o gestionar asistencia</p>
+      </div>
+      <div class="card">
+        <label class="field-label">Documento de identidad</label>
+        <input class="field" placeholder="Ej. 1079606375" style="margin-bottom:14px;">
+        <label class="field-label">Contraseña</label>
+        <input class="field" type="password" placeholder="••••••••">
+        <button class="btn-primary">Ingresar</button>
+      </div>
+    </div>
+  `
+},
+
+backend: {
+  label: "Config. Backend",
+  notes: {
+    left:{ title:"Antes", items:[
+      "Pantalla vacía: solo input + status plano",
+      "Sin explicación de por qué existe",
+      "Botón sin estado de carga",
+    ]},
+    right:{ title:"Cambios", items:[
+      "Reestructurado como onboarding guiado en 2 pasos",
+      "Indicador de conexión con color semántico",
+      "Botón con estado loading visible",
+    ]}
+  },
+  html: `
+    <div class="app-header">
+      <div class="title-row"><span class="badge-dot"></span><h2>Configuración</h2></div>
+      <div class="subtitle">Conectar con el servidor institucional</div>
+    </div>
+    <div class="content">
+      <div class="step-row">
+        <div class="step-num done">✓</div>
+        <div class="step-text"><b>Instalación lista</b><span>La app está instalada y en ejecución</span></div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-text"><b>Conecta con tu servidor</b><span>Pide la URL a tu instructor/docente</span></div>
+      </div>
+      <div class="card" style="margin-top:6px;">
+        <label class="field-label">URL del backend</label>
+        <input class="field" placeholder="https://mi-servidor.ngrok.app">
+        <span class="status-pill pending"><span class="dot"></span> Sin verificar</span>
+        <div style="height:12px;"></div>
+        <button class="btn-primary"><span class="spinner"></span> Validando conexión…</button>
+      </div>
+      <div class="warn-banner" style="margin-top:14px;">⚠ Esta URL solo se usa en este dispositivo</div>
+    </div>
+  `
+},
+
+institution: {
+  label:"Institución",
+  notes:{
+    left:{title:"Antes", items:[
+      "Tiles sin avatar ni identidad institucional",
+      "Solo un borde de color como diferenciador",
+      "Barra de 5px (tile-mark) poco comunicativa",
+    ]},
+    right:{title:"Cambios", items:[
+      "Cabecera de color sólida + iniciales como avatar",
+      "Nombre completo prominente + metadatos",
+      "Contraste claro entre instituciones",
+    ]}
+  },
+  html:`
+    <div class="app-header">
+      <div class="title-row"><span class="badge-dot"></span><h2>Selecciona institución</h2></div>
+      <div class="subtitle">Tienes acceso a 2 instituciones</div>
+    </div>
+    <div class="content">
+      <div class="inst-tile">
+        <div class="head" style="background:var(--accent-blue);">S</div>
+        <div class="body">
+          <h4>SENA</h4>
+          <p>Servicio Nacional de Aprendizaje</p>
+          <div class="meta"><span class="chip">Instructor</span><span class="chip">3 fichas</span></div>
+        </div>
+      </div>
+      <div class="inst-tile">
+        <div class="head" style="background:var(--accent-violet);">C</div>
+        <div class="body">
+          <h4>CORHUILA</h4>
+          <p>Corporación Universitaria del Huila</p>
+          <div class="meta"><span class="chip">Docente</span><span class="chip">2 materias</span></div>
+        </div>
+      </div>
+    </div>
+  `
+},
+
+unit: {
+  label:"Unidad académica",
+  notes:{
+    left:{title:"Antes", items:[
+      "IonList básica sin diferenciación visual",
+      "Badge neutro idéntico para todos los tipos",
+      "Sin conteo de personas por unidad",
+    ]},
+    right:{title:"Cambios", items:[
+      "Chip de tipo con color propio (ficha/materia)",
+      "Conteo de aprendices/estudiantes visible",
+      "Estado seleccionado con borde y check prominentes",
+    ]}
+  },
+  html:`
+    <div class="app-header">
+      <div class="title-row"><span class="badge-dot"></span><h2>Fichas — SENA</h2></div>
+      <div class="subtitle">Selecciona la ficha activa</div>
+    </div>
+    <div class="content">
+      <div class="unit-row selected">
+        <span class="type-chip" style="background:var(--accent-blue);">Ficha</span>
+        <div class="info"><b>2612345 — ADSO</b><span>34 aprendices · Trimestre 3</span></div>
+        <div class="check">✓</div>
+      </div>
+      <div class="unit-row">
+        <span class="type-chip" style="background:var(--accent-blue);">Ficha</span>
+        <div class="info"><b>2598877 — Redes</b><span>28 aprendices · Trimestre 2</span></div>
+        <div class="check"></div>
+      </div>
+      <div class="unit-row">
+        <span class="type-chip" style="background:var(--accent-blue);">Ficha</span>
+        <div class="info"><b>2601122 — Multimedia</b><span>19 aprendices · Trimestre 1</span></div>
+        <div class="check"></div>
+      </div>
+    </div>
+  `
+},
+
+dashboard: {
+  label:"Dashboard",
+  notes:{
+    left:{title:"Antes", items:[
+      "Hero sin estado de sesión visible",
+      "5 action cards sin agrupación conceptual",
+      "Unit warning banner genérico",
+    ]},
+    right:{title:"Cambios", items:[
+      "Hero con estado de sesión activa/inactiva",
+      "Cards agrupadas por sección con label",
+      "Un único color de acento por card",
+    ]}
+  },
+  html:`
+    <div class="app-header">
+      <div class="title-row"><span class="badge-dot"></span><h2>Panel — ADSO 2612345</h2></div>
+      <div class="subtitle">SENA · Instructor</div>
+      <div class="hero-status">
+        <span>Sesión de hoy</span>
+        <b>● Sin iniciar</b>
+      </div>
+    </div>
+    <div class="content">
+      <div class="section-label">Sesión</div>
+      <div class="action-grid">
+        <div class="action-card"><div class="icon" style="background:var(--accent-violet);">▦</div><b>Iniciar sesión QR</b><span>Generar código de sala</span></div>
+        <div class="action-card"><div class="icon" style="background:var(--accent-green);">☺</div><b>Aprendices</b><span>34 registrados</span></div>
+      </div>
+      <div class="section-label">Reportes</div>
+      <div class="action-grid">
+        <div class="action-card"><div class="icon" style="background:var(--accent-teal);">▤</div><b>Resultados</b><span>Última sesión</span></div>
+        <div class="action-card"><div class="icon" style="background:var(--accent-orange);">◷</div><b>Historial</b><span>12 sesiones</span></div>
+      </div>
+      <div class="warn-banner">⚠ No has seleccionado unidad activa esta semana</div>
+    </div>
+  `
+},
+
+session: {
+  label:"Sesión QR",
+  notes:{
+    left:{title:"Antes", items:[
+      "QR sin marco visual premium",
+      "Room code pequeño respecto a su importancia",
+      "Labels del stepper muy pequeñas",
+    ]},
+    right:{title:"Cambios", items:[
+      "Código de sala como elemento hero central",
+      "QR sobre fondo blanco con sombra",
+      "Stepper con labels más legibles",
+    ]}
+  },
+  html:`
+    <div class="app-header">
+      <div class="title-row"><span class="badge-dot"></span><h2>Sesión activa</h2></div>
+      <div class="subtitle">ADSO 2612345 · 07:32 min transcurridos</div>
+    </div>
+    <div class="content">
+      <div class="stepper">
+        <div class="st active"><div class="dot">1</div><span>Activada</span></div>
+        <div class="line"></div>
+        <div class="st"><div class="dot">2</div><span>En curso</span></div>
+        <div class="line"></div>
+        <div class="st"><div class="dot">3</div><span>Cerrar</span></div>
+      </div>
+      <div class="roomcode-hero">
+        <div class="eyebrow">Código de sala</div>
+        <div class="code">7F K9 P2</div>
+        <div class="ring"><div class="ring-inner">63s</div></div>
+        <div style="font-size:var(--fs-xs); opacity:.85;">Rota automáticamente cada 90s</div>
+      </div>
+      <div class="qr-panel">
+        <div class="qr-fake"></div>
+        <span style="font-size:var(--fs-sm); color:#5b6478;">QR temporal · expira en 8:12 min</span>
+      </div>
+      <button class="btn-outline" style="border-color:var(--danger-text); color:var(--danger-text);">Cerrar sesión</button>
+    </div>
+  `
+},
+
+checkin: {
+  label:"Check-in",
+  notes:{
+    left:{title:"Antes", items:[
+      "Info de sesión como texto plano",
+      "Sin instrucción de “debes estar en el aula”",
+      "OTP sin contexto institucional",
+    ]},
+    right:{title:"Cambios", items:[
+      "Banner de instrucción explícito y visible",
+      "Contexto de sesión con avatar de unidad",
+      "Resultado con banner grande y legible",
+    ]}
+  },
+  html:`
+    <div class="app-header">
+      <div class="title-row"><span class="badge-dot"></span><h2>Registrar asistencia</h2></div>
+      <div class="subtitle">ADSO 2612345 · Instructor Jesús González</div>
+    </div>
+    <div class="content">
+      <div class="instruction-banner">📍 Debes estar físicamente en el aula para registrar tu asistencia</div>
+      <div class="session-context">
+        <div class="av">AD</div>
+        <div><b>ADSO 2612345</b><span>Sesión iniciada hace 4 min</span></div>
+      </div>
+      <label class="field-label" style="text-align:center; display:block;">Ingresa el código de sala</label>
+      <div class="otp-row">
+        <div class="otp-box filled">7</div>
+        <div class="otp-box filled">F</div>
+        <div class="otp-box filled">K</div>
+        <div class="otp-box">·</div>
+        <div class="otp-box">·</div>
+        <div class="otp-box">·</div>
+      </div>
+      <button class="btn-primary" style="margin-bottom:16px;">Confirmar asistencia</button>
+      <div class="result-banner">✓ Asistencia registrada<span>09:04 a.m. · ADSO 2612345</span></div>
+    </div>
+  `
+},
+
+results: {
+  label:"Resultados",
+  notes:{
+    left:{title:"Antes", items:[
+      "Botón “Exportar Excel” en outline se pierde visualmente",
+    ]},
+    right:{title:"Cambios", items:[
+      "Botón de exportar con relleno (fill) y color propio",
+      "Métricas con borde semántico a la izquierda",
+    ]}
+  },
+  html:`
+    <div class="app-header">
+      <div class="title-row"><span class="badge-dot"></span><h2>Resultados</h2></div>
+      <div class="subtitle">ADSO 2612345 · 10 jul 2026</div>
+    </div>
+    <div class="content">
+      <div class="metric-card success"><span>Presentes</span><b style="color:var(--success-text);">28</b></div>
+      <div class="metric-card danger"><span>Ausentes</span><b style="color:var(--danger-text);">4</b></div>
+      <div class="metric-card warning"><span>Rechazados (código inválido)</span><b style="color:var(--warning-text);">2</b></div>
+      <div class="progress-bar"><div class="fill" style="width:82%;"></div></div>
+      <span style="font-size:var(--fs-xs); color:#5b6478;">82% de asistencia sobre 34 inscritos</span>
+      <div style="height:16px;"></div>
+      <button class="btn-export">⇩ Exportar a Excel</button>
+    </div>
+  `
+},
+
+history: {
+  label:"Historial",
+  notes:{
+    left:{title:"Antes", items:[
+      "Lista sin agrupación temporal",
+      "Filas idénticas sin diferenciación por estado",
+    ]},
+    right:{title:"Cambios", items:[
+      "Agrupación Hoy / Esta semana / Anteriores",
+      "Ícono de color por estado de la sesión",
+    ]}
+  },
+  html:`
+    <div class="app-header">
+      <div class="title-row"><span class="badge-dot"></span><h2>Historial</h2></div>
+      <div class="subtitle">ADSO 2612345</div>
+    </div>
+    <div class="content">
+      <div class="history-group-label">Hoy</div>
+      <div class="history-row">
+        <div class="icon" style="background:var(--accent-green);">✓</div>
+        <div class="info"><b>Sesión 09:00 a.m.</b><span>28/34 presentes</span></div>
+        <div class="count">82%</div>
+      </div>
+      <div class="history-group-label">Esta semana</div>
+      <div class="history-row">
+        <div class="icon" style="background:var(--accent-orange);">◷</div>
+        <div class="info"><b>Lun 06 jul</b><span>25/34 presentes</span></div>
+        <div class="count">74%</div>
+      </div>
+      <div class="history-row">
+        <div class="icon" style="background:var(--accent-green);">✓</div>
+        <div class="info"><b>Vie 03 jul</b><span>31/34 presentes</span></div>
+        <div class="count">91%</div>
+      </div>
+      <div class="history-group-label">Anteriores</div>
+      <div class="history-row">
+        <div class="icon" style="background:var(--neutral-text);">◷</div>
+        <div class="info"><b>Mié 01 jul</b><span>27/34 presentes</span></div>
+        <div class="count">79%</div>
+      </div>
+    </div>
+  `
+},
+
+};
+
+const tabsEl = document.getElementById('tabs');
+const screenEl = document.getElementById('screen');
+const noteLeft = document.getElementById('note-left');
+const noteRight = document.getElementById('note-right');
+
+function renderNote(el, data){
+  el.innerHTML = `<h3>${data.title}</h3><ul>${data.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+}
+
+function selectScreen(key){
+  const s = screens[key];
+  screenEl.innerHTML = `<div class="screen-scroll">${s.html}</div>`;
+  renderNote(noteLeft, s.notes.left);
+  renderNote(noteRight, s.notes.right);
+  [...tabsEl.children].forEach(b => b.classList.toggle('active', b.dataset.key === key));
+}
+
+Object.keys(screens).forEach(key=>{
+  const btn = document.createElement('button');
+  btn.className='tab-btn';
+  btn.dataset.key = key;
+  btn.textContent = screens[key].label;
+  btn.onclick = () => selectScreen(key);
+  tabsEl.appendChild(btn);
+});
+
+selectScreen('backend');
+</script>
+</body>
+</html>
