@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_13" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collab_13">
+    <bpmn:participant id="Part_Doc" name="Gestión Documental y Emisión de Horarios Oficiales" processRef="Proc_Doc" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_Doc" name="Emisión Documental" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_13">
+      <bpmn:lane id="Lane_Soporte_13" name="Soporte / Administrador Documental">
+        <bpmn:flowNodeRef>Start_13</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ConfigPlantilla</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_13_Ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Sys_13" name="Motor de Renderizado Documental (PDF / Excel)">
+        <bpmn:flowNodeRef>Task_CompilarDatos</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RenderPDF</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_EstamparFirma</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_13" name="Solicitud de Emisión de Reporte Oficial"><bpmn:outgoing>F_13_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:userTask id="Task_ConfigPlantilla" name="Seleccionar Plantilla y Filtros (Ficha / Sede / Instructor)"><bpmn:incoming>F_13_1</bpmn:incoming><bpmn:outgoing>F_13_2</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_CompilarDatos" name="Inyectar Datos del Horario y Validaciones"><bpmn:incoming>F_13_2</bpmn:incoming><bpmn:outgoing>F_13_3</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_RenderPDF" name="Renderizar Documento PDF / Hoja de Cálculo"><bpmn:incoming>F_13_3</bpmn:incoming><bpmn:outgoing>F_13_4</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_EstamparFirma" name="Estampar Código QR y Firma Digital Inmutable"><bpmn:incoming>F_13_4</bpmn:incoming><bpmn:outgoing>F_13_5</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="End_13_Ok" name="Reporte Oficial Descargado"><bpmn:incoming>F_13_5</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="F_13_1" sourceRef="Start_13" targetRef="Task_ConfigPlantilla" />
+    <bpmn:sequenceFlow id="F_13_2" sourceRef="Task_ConfigPlantilla" targetRef="Task_CompilarDatos" />
+    <bpmn:sequenceFlow id="F_13_3" sourceRef="Task_CompilarDatos" targetRef="Task_RenderPDF" />
+    <bpmn:sequenceFlow id="F_13_4" sourceRef="Task_RenderPDF" targetRef="Task_EstamparFirma" />
+    <bpmn:sequenceFlow id="F_13_5" sourceRef="Task_EstamparFirma" targetRef="End_13_Ok" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_13"><bpmndi:BPMNPlane id="Plane_13" bpmnElement="Collab_13">
+    <bpmndi:BPMNShape id="Part_Doc_di" bpmnElement="Part_Doc" isHorizontal="true"><dc:Bounds x="160" y="80" width="950" height="420" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Soporte_13_di" bpmnElement="Lane_Soporte_13" isHorizontal="true"><dc:Bounds x="190" y="80" width="920" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Sys_13_di" bpmnElement="Lane_Sys_13" isHorizontal="true"><dc:Bounds x="190" y="290" width="920" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Start_13_di" bpmnElement="Start_13"><dc:Bounds x="232" y="162" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_ConfigPlantilla_di" bpmnElement="Task_ConfigPlantilla"><dc:Bounds x="320" y="140" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_CompilarDatos_di" bpmnElement="Task_CompilarDatos"><dc:Bounds x="320" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_RenderPDF_di" bpmnElement="Task_RenderPDF"><dc:Bounds x="490" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_EstamparFirma_di" bpmnElement="Task_EstamparFirma"><dc:Bounds x="660" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="End_13_Ok_di" bpmnElement="End_13_Ok"><dc:Bounds x="842" y="162" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="F_13_1_di" bpmnElement="F_13_1"><di:waypoint x="268" y="180" /><di:waypoint x="320" y="180" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_13_2_di" bpmnElement="F_13_2"><di:waypoint x="385" y="220" /><di:waypoint x="385" y="350" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_13_3_di" bpmnElement="F_13_3"><di:waypoint x="450" y="390" /><di:waypoint x="490" y="390" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_13_4_di" bpmnElement="F_13_4"><di:waypoint x="620" y="390" /><di:waypoint x="660" y="390" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_13_5_di" bpmnElement="F_13_5"><di:waypoint x="790" y="390" /><di:waypoint x="816" y="390" /><di:waypoint x="816" y="180" /><di:waypoint x="842" y="180" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

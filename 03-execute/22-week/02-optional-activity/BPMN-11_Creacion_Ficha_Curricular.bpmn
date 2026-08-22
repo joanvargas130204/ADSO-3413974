@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_11" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collab_11">
+    <bpmn:participant id="Part_Ficha" name="Creación de Ficha de Caracterización y Mapeo Curricular" processRef="Proc_Ficha" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_Ficha" name="Gestión de Ficha Curricular" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_11">
+      <bpmn:lane id="Lane_Coord_11" name="Coordinador Académico">
+        <bpmn:flowNodeRef>Start_11</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CrearFicha</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_DefinirFases</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Sys_11" name="Sistema de Gestión Curricular / Core Académico">
+        <bpmn:flowNodeRef>Task_ImportarRAP</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AsociarAprendices</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_11_Ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_11" name="Apertura de Grupo / Ficha"><bpmn:outgoing>F_11_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:userTask id="Task_CrearFicha" name="Registrar Código de Ficha, Cupo, Jornada y Sede"><bpmn:incoming>F_11_1</bpmn:incoming><bpmn:outgoing>F_11_2</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_ImportarRAP" name="Importar Competencias y Resultados de Aprendizaje"><bpmn:incoming>F_11_2</bpmn:incoming><bpmn:outgoing>F_11_3</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:userTask id="Task_DefinirFases" name="Asignar Fases del Proyecto Formativo"><bpmn:incoming>F_11_3</bpmn:incoming><bpmn:outgoing>F_11_4</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_AsociarAprendices" name="Vincular Lista de Aprendices Matriculados"><bpmn:incoming>F_11_4</bpmn:incoming><bpmn:outgoing>F_11_5</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="End_11_Ok" name="Ficha Habilitada para Programar Horarios"><bpmn:incoming>F_11_5</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="F_11_1" sourceRef="Start_11" targetRef="Task_CrearFicha" />
+    <bpmn:sequenceFlow id="F_11_2" sourceRef="Task_CrearFicha" targetRef="Task_ImportarRAP" />
+    <bpmn:sequenceFlow id="F_11_3" sourceRef="Task_ImportarRAP" targetRef="Task_DefinirFases" />
+    <bpmn:sequenceFlow id="F_11_4" sourceRef="Task_DefinirFases" targetRef="Task_AsociarAprendices" />
+    <bpmn:sequenceFlow id="F_11_5" sourceRef="Task_AsociarAprendices" targetRef="End_11_Ok" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_11"><bpmndi:BPMNPlane id="Plane_11" bpmnElement="Collab_11">
+    <bpmndi:BPMNShape id="Part_Ficha_di" bpmnElement="Part_Ficha" isHorizontal="true"><dc:Bounds x="160" y="80" width="950" height="420" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Coord_11_di" bpmnElement="Lane_Coord_11" isHorizontal="true"><dc:Bounds x="190" y="80" width="920" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Sys_11_di" bpmnElement="Lane_Sys_11" isHorizontal="true"><dc:Bounds x="190" y="290" width="920" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Start_11_di" bpmnElement="Start_11"><dc:Bounds x="232" y="162" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_CrearFicha_di" bpmnElement="Task_CrearFicha"><dc:Bounds x="320" y="140" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_ImportarRAP_di" bpmnElement="Task_ImportarRAP"><dc:Bounds x="480" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_DefinirFases_di" bpmnElement="Task_DefinirFases"><dc:Bounds x="640" y="140" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_AsociarAprendices_di" bpmnElement="Task_AsociarAprendices"><dc:Bounds x="640" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="End_11_Ok_di" bpmnElement="End_11_Ok"><dc:Bounds x="832" y="372" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="F_11_1_di" bpmnElement="F_11_1"><di:waypoint x="268" y="180" /><di:waypoint x="320" y="180" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_11_2_di" bpmnElement="F_11_2"><di:waypoint x="385" y="220" /><di:waypoint x="385" y="390" /><di:waypoint x="480" y="390" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_11_3_di" bpmnElement="F_11_3"><di:waypoint x="610" y="390" /><di:waypoint x="625" y="390" /><di:waypoint x="625" y="180" /><di:waypoint x="640" y="180" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_11_4_di" bpmnElement="F_11_4"><di:waypoint x="705" y="220" /><di:waypoint x="705" y="350" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_11_5_di" bpmnElement="F_11_5"><di:waypoint x="770" y="390" /><di:waypoint x="832" y="390" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

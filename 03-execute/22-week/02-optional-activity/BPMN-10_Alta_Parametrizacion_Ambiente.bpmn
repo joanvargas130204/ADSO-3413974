@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_10" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collab_10">
+    <bpmn:participant id="Part_AltaAmbiente" name="Alta y Parametrización de Nuevos Ambientes de Formación" processRef="Proc_AltaAmbiente" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_AltaAmbiente" name="Alta de Ambientes" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_10">
+      <bpmn:lane id="Lane_Soporte_10" name="Administrador de Infraestructura / Soporte">
+        <bpmn:flowNodeRef>Start_10</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RegDatosAmbiente</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AsociarProgramas</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Sys_10" name="Catálogo de Ambientes &amp; Disponibilidad">
+        <bpmn:flowNodeRef>Task_GenerarSlotBase</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ActivarCatalogo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_10_Ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_10" name="Recepción de Nuevo Ambiente Físico/Virtual"><bpmn:outgoing>F_10_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:userTask id="Task_RegDatosAmbiente" name="Registrar Sede, Bloque, Capacidad y Tipo de Ambiente"><bpmn:incoming>F_10_1</bpmn:incoming><bpmn:outgoing>F_10_2</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_AsociarProgramas" name="Vincular Especialidades y Equipamiento Técnico"><bpmn:incoming>F_10_2</bpmn:incoming><bpmn:outgoing>F_10_3</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_GenerarSlotBase" name="Generar Matriz de Disponibilidad Base"><bpmn:incoming>F_10_3</bpmn:incoming><bpmn:outgoing>F_10_4</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_ActivarCatalogo" name="Habilitar en Catálogo de Selección de Horarios"><bpmn:incoming>F_10_4</bpmn:incoming><bpmn:outgoing>F_10_5</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="End_10_Ok" name="Ambiente Disponible para Planeación"><bpmn:incoming>F_10_5</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="F_10_1" sourceRef="Start_10" targetRef="Task_RegDatosAmbiente" />
+    <bpmn:sequenceFlow id="F_10_2" sourceRef="Task_RegDatosAmbiente" targetRef="Task_AsociarProgramas" />
+    <bpmn:sequenceFlow id="F_10_3" sourceRef="Task_AsociarProgramas" targetRef="Task_GenerarSlotBase" />
+    <bpmn:sequenceFlow id="F_10_4" sourceRef="Task_GenerarSlotBase" targetRef="Task_ActivarCatalogo" />
+    <bpmn:sequenceFlow id="F_10_5" sourceRef="Task_ActivarCatalogo" targetRef="End_10_Ok" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_10"><bpmndi:BPMNPlane id="Plane_10" bpmnElement="Collab_10">
+    <bpmndi:BPMNShape id="Part_AltaAmbiente_di" bpmnElement="Part_AltaAmbiente" isHorizontal="true"><dc:Bounds x="160" y="80" width="950" height="420" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Soporte_10_di" bpmnElement="Lane_Soporte_10" isHorizontal="true"><dc:Bounds x="190" y="80" width="920" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Sys_10_di" bpmnElement="Lane_Sys_10" isHorizontal="true"><dc:Bounds x="190" y="290" width="920" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Start_10_di" bpmnElement="Start_10"><dc:Bounds x="232" y="162" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_RegDatosAmbiente_di" bpmnElement="Task_RegDatosAmbiente"><dc:Bounds x="320" y="140" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_AsociarProgramas_di" bpmnElement="Task_AsociarProgramas"><dc:Bounds x="490" y="140" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_GenerarSlotBase_di" bpmnElement="Task_GenerarSlotBase"><dc:Bounds x="490" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_ActivarCatalogo_di" bpmnElement="Task_ActivarCatalogo"><dc:Bounds x="670" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="End_10_Ok_di" bpmnElement="End_10_Ok"><dc:Bounds x="862" y="372" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="F_10_1_di" bpmnElement="F_10_1"><di:waypoint x="268" y="180" /><di:waypoint x="320" y="180" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_10_2_di" bpmnElement="F_10_2"><di:waypoint x="450" y="180" /><di:waypoint x="490" y="180" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_10_3_di" bpmnElement="F_10_3"><di:waypoint x="555" y="220" /><di:waypoint x="555" y="350" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_10_4_di" bpmnElement="F_10_4"><di:waypoint x="620" y="390" /><di:waypoint x="670" y="390" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_10_5_di" bpmnElement="F_10_5"><di:waypoint x="800" y="390" /><di:waypoint x="862" y="390" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

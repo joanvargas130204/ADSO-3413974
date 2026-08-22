@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_04" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collaboration_04">
+    <bpmn:participant id="Participant_Ambientes" name="Gestión y Contingencia de Ambientes de Formación" processRef="Process_Bloqueo_Ambientes" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Bloqueo_Ambientes" name="Bloqueo y Contingencia de Ambientes" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_04">
+      <bpmn:lane id="Lane_Soporte_04" name="Soporte / Infraestructura">
+        <bpmn:flowNodeRef>StartEvent_Falla</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ReportarBloqueo</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Coordinador_04" name="Coordinador Académico">
+        <bpmn:flowNodeRef>Task_SeleccionarAmbienteAlt</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Sistema_04" name="Sistema de Gestión de Ambientes / Notificaciones">
+        <bpmn:flowNodeRef>Task_ConsultarAfectadas</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_HayAfectadas</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_MarcarMantenimiento</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_SinImpacto</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_NotificarAlerta</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ActualizarHorarios</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_NotificarCambioSalon</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Reubicado</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_Falla" name="Falla o Mantenimiento Detectado">
+      <bpmn:outgoing>Flow_4_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_ReportarBloqueo" name="Reportar Novedad y Solicitar Bloqueo de Ambiente">
+      <bpmn:incoming>Flow_4_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_4_02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_ConsultarAfectadas" name="Consultar Sesiones Programadas en el Ambiente">
+      <bpmn:incoming>Flow_4_02</bpmn:incoming>
+      <bpmn:outgoing>Flow_4_03</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_HayAfectadas" name="¿Existen Sesiones Afectadas?">
+      <bpmn:incoming>Flow_4_03</bpmn:incoming>
+      <bpmn:outgoing>Flow_NoAfectadas</bpmn:outgoing>
+      <bpmn:outgoing>Flow_SiAfectadas</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_MarcarMantenimiento" name="Marcar Estado en MANTENIMIENTO">
+      <bpmn:incoming>Flow_NoAfectadas</bpmn:incoming>
+      <bpmn:outgoing>Flow_4_04</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_SinImpacto" name="Ambiente Bloqueado Sin Impacto">
+      <bpmn:incoming>Flow_4_04</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sendTask id="Task_NotificarAlerta" name="Notificar Alerta Crítica al Coordinador">
+      <bpmn:incoming>Flow_SiAfectadas</bpmn:incoming>
+      <bpmn:outgoing>Flow_4_05</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:userTask id="Task_SeleccionarAmbienteAlt" name="Seleccionar Ambiente Alternativo Compatible">
+      <bpmn:incoming>Flow_4_05</bpmn:incoming>
+      <bpmn:outgoing>Flow_4_06</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_ActualizarHorarios" name="Actualizar Asignación de Ambiente en Horarios">
+      <bpmn:incoming>Flow_4_06</bpmn:incoming>
+      <bpmn:outgoing>Flow_4_07</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sendTask id="Task_NotificarCambioSalon" name="Notificar Cambio de Salón a Instructores y Aprendices">
+      <bpmn:incoming>Flow_4_07</bpmn:incoming>
+      <bpmn:outgoing>Flow_4_08</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="EndEvent_Reubicado" name="Sesiones Reubicadas y Contingencia Cubierta">
+      <bpmn:incoming>Flow_4_08</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_4_01" sourceRef="StartEvent_Falla" targetRef="Task_ReportarBloqueo" />
+    <bpmn:sequenceFlow id="Flow_4_02" sourceRef="Task_ReportarBloqueo" targetRef="Task_ConsultarAfectadas" />
+    <bpmn:sequenceFlow id="Flow_4_03" sourceRef="Task_ConsultarAfectadas" targetRef="Gateway_HayAfectadas" />
+    <bpmn:sequenceFlow id="Flow_NoAfectadas" name="No" sourceRef="Gateway_HayAfectadas" targetRef="Task_MarcarMantenimiento" />
+    <bpmn:sequenceFlow id="Flow_SiAfectadas" name="Sí" sourceRef="Gateway_HayAfectadas" targetRef="Task_NotificarAlerta" />
+    <bpmn:sequenceFlow id="Flow_4_04" sourceRef="Task_MarcarMantenimiento" targetRef="EndEvent_SinImpacto" />
+    <bpmn:sequenceFlow id="Flow_4_05" sourceRef="Task_NotificarAlerta" targetRef="Task_SeleccionarAmbienteAlt" />
+    <bpmn:sequenceFlow id="Flow_4_06" sourceRef="Task_SeleccionarAmbienteAlt" targetRef="Task_ActualizarHorarios" />
+    <bpmn:sequenceFlow id="Flow_4_07" sourceRef="Task_ActualizarHorarios" targetRef="Task_NotificarCambioSalon" />
+    <bpmn:sequenceFlow id="Flow_4_08" sourceRef="Task_NotificarCambioSalon" targetRef="EndEvent_Reubicado" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_4">
+    <bpmndi:BPMNPlane id="BPMNPlane_4" bpmnElement="Collaboration_04">
+      <bpmndi:BPMNShape id="Participant_Ambientes_di" bpmnElement="Participant_Ambientes" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1180" height="580" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Soporte_04_di" bpmnElement="Lane_Soporte_04" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="1150" height="170" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Coordinador_04_di" bpmnElement="Lane_Coordinador_04" isHorizontal="true">
+        <dc:Bounds x="190" y="250" width="1150" height="170" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Sistema_04_di" bpmnElement="Lane_Sistema_04" isHorizontal="true">
+        <dc:Bounds x="190" y="420" width="1150" height="240" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_Falla_di" bpmnElement="StartEvent_Falla">
+        <dc:Bounds x="232" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="215" y="185" width="71" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReportarBloqueo_di" bpmnElement="Task_ReportarBloqueo">
+        <dc:Bounds x="320" y="120" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConsultarAfectadas_di" bpmnElement="Task_ConsultarAfectadas">
+        <dc:Bounds x="320" y="500" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HayAfectadas_di" bpmnElement="Gateway_HayAfectadas" isMarkerVisible="true">
+        <dc:Bounds x="495" y="515" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="477" y="575" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MarcarMantenimiento_di" bpmnElement="Task_MarcarMantenimiento">
+        <dc:Bounds x="610" y="500" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_SinImpacto_di" bpmnElement="EndEvent_SinImpacto">
+        <dc:Bounds x="782" y="522" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="762" y="565" width="76" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotificarAlerta_di" bpmnElement="Task_NotificarAlerta">
+        <dc:Bounds x="460" y="440" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SeleccionarAmbienteAlt_di" bpmnElement="Task_SeleccionarAmbienteAlt">
+        <dc:Bounds x="610" y="300" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ActualizarHorarios_di" bpmnElement="Task_ActualizarHorarios">
+        <dc:Bounds x="780" y="480" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotificarCambioSalon_di" bpmnElement="Task_NotificarCambioSalon">
+        <dc:Bounds x="950" y="480" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Reubicado_di" bpmnElement="EndEvent_Reubicado">
+        <dc:Bounds x="1122" y="502" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1103" y="545" width="75" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_4_01_di" bpmnElement="Flow_4_01">
+        <di:waypoint x="268" y="160" />
+        <di:waypoint x="320" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_02_di" bpmnElement="Flow_4_02">
+        <di:waypoint x="380" y="200" />
+        <di:waypoint x="380" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_03_di" bpmnElement="Flow_4_03">
+        <di:waypoint x="440" y="540" />
+        <di:waypoint x="495" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NoAfectadas_di" bpmnElement="Flow_NoAfectadas">
+        <di:waypoint x="545" y="540" />
+        <di:waypoint x="610" y="540" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="570" y="522" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_04_di" bpmnElement="Flow_4_04">
+        <di:waypoint x="730" y="540" />
+        <di:waypoint x="782" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SiAfectadas_di" bpmnElement="Flow_SiAfectadas">
+        <di:waypoint x="520" y="515" />
+        <di:waypoint x="520" y="500" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="529" y="505" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_05_di" bpmnElement="Flow_4_05">
+        <di:waypoint x="520" y="440" />
+        <di:waypoint x="520" y="340" />
+        <di:waypoint x="610" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_06_di" bpmnElement="Flow_4_06">
+        <di:waypoint x="730" y="340" />
+        <di:waypoint x="755" y="340" />
+        <di:waypoint x="755" y="520" />
+        <di:waypoint x="780" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_07_di" bpmnElement="Flow_4_07">
+        <di:waypoint x="900" y="520" />
+        <di:waypoint x="950" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_08_di" bpmnElement="Flow_4_08">
+        <di:waypoint x="1070" y="520" />
+        <di:waypoint x="1122" y="520" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

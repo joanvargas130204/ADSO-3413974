@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_03" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collaboration_03">
+    <bpmn:participant id="Participant_Seguimiento" name="Registro de Seguimiento Curricular y Asistencia" processRef="Process_Seguimiento_Formacion" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Seguimiento_Formacion" name="Seguimiento Curricular y Asistencia" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_03">
+      <bpmn:lane id="Lane_Instructor_03" name="Instructor">
+        <bpmn:flowNodeRef>StartEvent_Sesion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_EjecutarSesion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RegistrarSeguimiento</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Novedades</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RegistrarObservacion</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Sistema_03" name="Sistema de Información Académica">
+        <bpmn:flowNodeRef>Task_EnviarAlerta</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ActualizarAvance</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_SesionConcluida</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_Sesion" name="Llegada de la Hora de Sesión">
+      <bpmn:outgoing>Flow_3_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_EjecutarSesion" name="Impartir Formación en Ambiente Asignado">
+      <bpmn:incoming>Flow_3_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_3_02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_RegistrarSeguimiento" name="Registrar Tema Ejecutado y Asistencia">
+      <bpmn:incoming>Flow_3_02</bpmn:incoming>
+      <bpmn:outgoing>Flow_3_03</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Novedades" name="¿Se presentaron inasistencias o novedades?">
+      <bpmn:incoming>Flow_3_03</bpmn:incoming>
+      <bpmn:outgoing>Flow_SiNovedades</bpmn:outgoing>
+      <bpmn:outgoing>Flow_NoNovedades</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_RegistrarObservacion" name="Registrar Observación / Plan de Mejora">
+      <bpmn:incoming>Flow_SiNovedades</bpmn:incoming>
+      <bpmn:outgoing>Flow_3_04</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sendTask id="Task_EnviarAlerta" name="Emitir Notificación a Coordinación y Aprendiz">
+      <bpmn:incoming>Flow_3_04</bpmn:incoming>
+      <bpmn:outgoing>Flow_3_05</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:serviceTask id="Task_ActualizarAvance" name="Calcular y Actualizar % de Avance de la Ficha">
+      <bpmn:incoming>Flow_3_05</bpmn:incoming>
+      <bpmn:incoming>Flow_NoNovedades</bpmn:incoming>
+      <bpmn:outgoing>Flow_3_06</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_SesionConcluida" name="Sesión Cerrada en Bitácora">
+      <bpmn:incoming>Flow_3_06</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_3_01" sourceRef="StartEvent_Sesion" targetRef="Task_EjecutarSesion" />
+    <bpmn:sequenceFlow id="Flow_3_02" sourceRef="Task_EjecutarSesion" targetRef="Task_RegistrarSeguimiento" />
+    <bpmn:sequenceFlow id="Flow_3_03" sourceRef="Task_RegistrarSeguimiento" targetRef="Gateway_Novedades" />
+    <bpmn:sequenceFlow id="Flow_SiNovedades" name="Sí" sourceRef="Gateway_Novedades" targetRef="Task_RegistrarObservacion" />
+    <bpmn:sequenceFlow id="Flow_NoNovedades" name="No" sourceRef="Gateway_Novedades" targetRef="Task_ActualizarAvance" />
+    <bpmn:sequenceFlow id="Flow_3_04" sourceRef="Task_RegistrarObservacion" targetRef="Task_EnviarAlerta" />
+    <bpmn:sequenceFlow id="Flow_3_05" sourceRef="Task_EnviarAlerta" targetRef="Task_ActualizarAvance" />
+    <bpmn:sequenceFlow id="Flow_3_06" sourceRef="Task_ActualizarAvance" targetRef="EndEvent_SesionConcluida" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_3">
+    <bpmndi:BPMNPlane id="BPMNPlane_3" bpmnElement="Collaboration_03">
+      <bpmndi:BPMNShape id="Participant_Seguimiento_di" bpmnElement="Participant_Seguimiento" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1050" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Instructor_03_di" bpmnElement="Lane_Instructor_03" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="1020" height="210" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Sistema_03_di" bpmnElement="Lane_Sistema_03" isHorizontal="true">
+        <dc:Bounds x="190" y="290" width="1020" height="210" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_Sesion_di" bpmnElement="StartEvent_Sesion">
+        <dc:Bounds x="232" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="216" y="205" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EjecutarSesion_di" bpmnElement="Task_EjecutarSesion">
+        <dc:Bounds x="310" y="140" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegistrarSeguimiento_di" bpmnElement="Task_RegistrarSeguimiento">
+        <dc:Bounds x="460" y="140" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Novedades_di" bpmnElement="Gateway_Novedades" isMarkerVisible="true">
+        <dc:Bounds x="615" y="155" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="599" y="105" width="83" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegistrarObservacion_di" bpmnElement="Task_RegistrarObservacion">
+        <dc:Bounds x="700" y="140" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnviarAlerta_di" bpmnElement="Task_EnviarAlerta">
+        <dc:Bounds x="700" y="360" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ActualizarAvance_di" bpmnElement="Task_ActualizarAvance">
+        <dc:Bounds x="860" y="360" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_SesionConcluida_di" bpmnElement="EndEvent_SesionConcluida">
+        <dc:Bounds x="1032" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1010" y="425" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_3_01_di" bpmnElement="Flow_3_01">
+        <di:waypoint x="268" y="180" />
+        <di:waypoint x="310" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_02_di" bpmnElement="Flow_3_02">
+        <di:waypoint x="430" y="180" />
+        <di:waypoint x="460" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_03_di" bpmnElement="Flow_3_03">
+        <di:waypoint x="580" y="180" />
+        <di:waypoint x="615" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SiNovedades_di" bpmnElement="Flow_SiNovedades">
+        <di:waypoint x="665" y="180" />
+        <di:waypoint x="700" y="180" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="676" y="162" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_04_di" bpmnElement="Flow_3_04">
+        <di:waypoint x="760" y="220" />
+        <di:waypoint x="760" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_05_di" bpmnElement="Flow_3_05">
+        <di:waypoint x="820" y="400" />
+        <di:waypoint x="860" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NoNovedades_di" bpmnElement="Flow_NoNovedades">
+        <di:waypoint x="640" y="205" />
+        <di:waypoint x="640" y="400" />
+        <di:waypoint x="860" y="400" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="648" y="299" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_06_di" bpmnElement="Flow_3_06">
+        <di:waypoint x="980" y="400" />
+        <di:waypoint x="1032" y="400" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

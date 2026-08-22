@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_02" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collaboration_02">
+    <bpmn:participant id="Participant_Excepciones" name="Gestión de Disponibilidad y Excepciones" processRef="Process_Gestion_Excepciones" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Gestion_Excepciones" name="Gestión de Disponibilidad y Excepciones del Instructor" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_02">
+      <bpmn:lane id="Lane_Instructor_02" name="Instructor">
+        <bpmn:flowNodeRef>StartEvent_Novedad</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RegistrarExcepcion</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Coordinador_02" name="Coordinador Académico">
+        <bpmn:flowNodeRef>Task_EvaluarSolicitud</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Aprobada</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AsignarSuplente</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Sistema_02" name="Sistema de Información / Notificaciones">
+        <bpmn:flowNodeRef>Task_ConsultarAfectacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_NotificarRechazo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Rechazada</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_AfectaClases</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_NotificarFicha</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ActualizarAgenda</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Aplicada</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_Novedad" name="Novedad o Incapacidad Presentada">
+      <bpmn:outgoing>Flow_2_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_RegistrarExcepcion" name="Registrar Franja de Excepción y Adjuntar Soporte">
+      <bpmn:incoming>Flow_2_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_ConsultarAfectacion" name="Consultar Sesiones Programadas Afectadas">
+      <bpmn:incoming>Flow_2_02</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_03</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Task_EvaluarSolicitud" name="Revisar Motivo y Decidir Solicitud">
+      <bpmn:incoming>Flow_2_03</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_04</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Aprobada" name="¿Solicitud Aprobada?">
+      <bpmn:incoming>Flow_2_04</bpmn:incoming>
+      <bpmn:outgoing>Flow_NoAprobada</bpmn:outgoing>
+      <bpmn:outgoing>Flow_SiAprobada</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sendTask id="Task_NotificarRechazo" name="Notificar Rechazo con Observaciones">
+      <bpmn:incoming>Flow_NoAprobada</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_05</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="EndEvent_Rechazada" name="Excepción Denegada">
+      <bpmn:incoming>Flow_2_05</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_AfectaClases" name="¿Afecta Sesiones Publicadas?">
+      <bpmn:incoming>Flow_SiAprobada</bpmn:incoming>
+      <bpmn:outgoing>Flow_SiAfecta</bpmn:outgoing>
+      <bpmn:outgoing>Flow_NoAfecta</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_AsignarSuplente" name="Asignar Instructor Suplente o Reprogramar">
+      <bpmn:incoming>Flow_SiAfecta</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_06</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sendTask id="Task_NotificarFicha" name="Notificar Cambio a Instructores y Ficha">
+      <bpmn:incoming>Flow_2_06</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_07</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:serviceTask id="Task_ActualizarAgenda" name="Actualizar Matriz de Disponibilidad y Horarios">
+      <bpmn:incoming>Flow_2_07</bpmn:incoming>
+      <bpmn:incoming>Flow_NoAfecta</bpmn:incoming>
+      <bpmn:outgoing>Flow_2_08</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Aplicada" name="Excepción Aplicada y Horario Ajustado">
+      <bpmn:incoming>Flow_2_08</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_2_01" sourceRef="StartEvent_Novedad" targetRef="Task_RegistrarExcepcion" />
+    <bpmn:sequenceFlow id="Flow_2_02" sourceRef="Task_RegistrarExcepcion" targetRef="Task_ConsultarAfectacion" />
+    <bpmn:sequenceFlow id="Flow_2_03" sourceRef="Task_ConsultarAfectacion" targetRef="Task_EvaluarSolicitud" />
+    <bpmn:sequenceFlow id="Flow_2_04" sourceRef="Task_EvaluarSolicitud" targetRef="Gateway_Aprobada" />
+    <bpmn:sequenceFlow id="Flow_NoAprobada" name="No" sourceRef="Gateway_Aprobada" targetRef="Task_NotificarRechazo" />
+    <bpmn:sequenceFlow id="Flow_SiAprobada" name="Sí" sourceRef="Gateway_Aprobada" targetRef="Gateway_AfectaClases" />
+    <bpmn:sequenceFlow id="Flow_2_05" sourceRef="Task_NotificarRechazo" targetRef="EndEvent_Rechazada" />
+    <bpmn:sequenceFlow id="Flow_SiAfecta" name="Sí" sourceRef="Gateway_AfectaClases" targetRef="Task_AsignarSuplente" />
+    <bpmn:sequenceFlow id="Flow_NoAfecta" name="No" sourceRef="Gateway_AfectaClases" targetRef="Task_ActualizarAgenda" />
+    <bpmn:sequenceFlow id="Flow_2_06" sourceRef="Task_AsignarSuplente" targetRef="Task_NotificarFicha" />
+    <bpmn:sequenceFlow id="Flow_2_07" sourceRef="Task_NotificarFicha" targetRef="Task_ActualizarAgenda" />
+    <bpmn:sequenceFlow id="Flow_2_08" sourceRef="Task_ActualizarAgenda" targetRef="EndEvent_Aplicada" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_2">
+    <bpmndi:BPMNPlane id="BPMNPlane_2" bpmnElement="Collaboration_02">
+      <bpmndi:BPMNShape id="Participant_Excepciones_di" bpmnElement="Participant_Excepciones" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1180" height="600" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Instructor_02_di" bpmnElement="Lane_Instructor_02" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="1150" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Coordinador_02_di" bpmnElement="Lane_Coordinador_02" isHorizontal="true">
+        <dc:Bounds x="190" y="260" width="1150" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Sistema_02_di" bpmnElement="Lane_Sistema_02" isHorizontal="true">
+        <dc:Bounds x="190" y="460" width="1150" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_Novedad_di" bpmnElement="StartEvent_Novedad">
+        <dc:Bounds x="232" y="152" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="219" y="195" width="63" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegistrarExcepcion_di" bpmnElement="Task_RegistrarExcepcion">
+        <dc:Bounds x="320" y="130" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConsultarAfectacion_di" bpmnElement="Task_ConsultarAfectacion">
+        <dc:Bounds x="320" y="530" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EvaluarSolicitud_di" bpmnElement="Task_EvaluarSolicitud">
+        <dc:Bounds x="480" y="320" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Aprobada_di" bpmnElement="Gateway_Aprobada" isMarkerVisible="true">
+        <dc:Bounds x="645" y="335" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="642" y="298" width="56" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotificarRechazo_di" bpmnElement="Task_NotificarRechazo">
+        <dc:Bounds x="610" y="530" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Rechazada_di" bpmnElement="EndEvent_Rechazada">
+        <dc:Bounds x="772" y="552" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="764" y="595" width="53" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AfectaClases_di" bpmnElement="Gateway_AfectaClases" isMarkerVisible="true">
+        <dc:Bounds x="765" y="335" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="746" y="298" width="88" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AsignarSuplente_di" bpmnElement="Task_AsignarSuplente">
+        <dc:Bounds x="870" y="320" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotificarFicha_di" bpmnElement="Task_NotificarFicha">
+        <dc:Bounds x="870" y="530" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ActualizarAgenda_di" bpmnElement="Task_ActualizarAgenda">
+        <dc:Bounds x="1040" y="530" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Aplicada_di" bpmnElement="EndEvent_Aplicada">
+        <dc:Bounds x="1212" y="552" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1187" y="595" width="87" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_2_01_di" bpmnElement="Flow_2_01">
+        <di:waypoint x="268" y="170" />
+        <di:waypoint x="320" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_02_di" bpmnElement="Flow_2_02">
+        <di:waypoint x="380" y="210" />
+        <di:waypoint x="380" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_03_di" bpmnElement="Flow_2_03">
+        <di:waypoint x="440" y="570" />
+        <di:waypoint x="460" y="570" />
+        <di:waypoint x="460" y="360" />
+        <di:waypoint x="480" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_04_di" bpmnElement="Flow_2_04">
+        <di:waypoint x="600" y="360" />
+        <di:waypoint x="645" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NoAprobada_di" bpmnElement="Flow_NoAprobada">
+        <di:waypoint x="670" y="385" />
+        <di:waypoint x="670" y="530" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="678" y="445" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_05_di" bpmnElement="Flow_2_05">
+        <di:waypoint x="730" y="570" />
+        <di:waypoint x="772" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SiAprobada_di" bpmnElement="Flow_SiAprobada">
+        <di:waypoint x="695" y="360" />
+        <di:waypoint x="765" y="360" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="724" y="342" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SiAfecta_di" bpmnElement="Flow_SiAfecta">
+        <di:waypoint x="815" y="360" />
+        <di:waypoint x="870" y="360" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="836" y="342" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_06_di" bpmnElement="Flow_2_06">
+        <di:waypoint x="930" y="400" />
+        <di:waypoint x="930" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_07_di" bpmnElement="Flow_2_07">
+        <di:waypoint x="990" y="570" />
+        <di:waypoint x="1040" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NoAfecta_di" bpmnElement="Flow_NoAfecta">
+        <di:waypoint x="790" y="385" />
+        <di:waypoint x="790" y="490" />
+        <di:waypoint x="1100" y="490" />
+        <di:waypoint x="1100" y="530" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="938" y="472" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_08_di" bpmnElement="Flow_2_08">
+        <di:waypoint x="1160" y="570" />
+        <di:waypoint x="1212" y="570" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

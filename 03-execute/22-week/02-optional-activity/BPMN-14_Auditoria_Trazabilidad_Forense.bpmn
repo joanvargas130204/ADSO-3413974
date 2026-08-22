@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_14" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collab_14">
+    <bpmn:participant id="Part_Audit" name="Auditoría Técnica y Trazabilidad Forense" processRef="Proc_Audit" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_Audit" name="Auditoría Técnica" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_14">
+      <bpmn:lane id="Lane_Sec_14" name="Oficial de Seguridad / Soporte Especializado">
+        <bpmn:flowNodeRef>Task_FiltrarLogs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ExportarEvidencias</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_14_Ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Sys_14" name="Motor de Auditoría Inmutable (Event Sourcing)">
+        <bpmn:flowNodeRef>Start_14</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CapturarEvento</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_GuardarLogInmutable</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_14" name="Operación Crítica Realizada"><bpmn:outgoing>F_14_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:serviceTask id="Task_CapturarEvento" name="Capturar Actor, IP, Payload, Timestamp y Hash"><bpmn:incoming>F_14_1</bpmn:incoming><bpmn:outgoing>F_14_2</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_GuardarLogInmutable" name="Persistir en Bitácora Inmutable"><bpmn:incoming>F_14_2</bpmn:incoming><bpmn:outgoing>F_14_3</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:userTask id="Task_FiltrarLogs" name="Consultar Trazas en Panel de Auditoría"><bpmn:incoming>F_14_3</bpmn:incoming><bpmn:outgoing>F_14_4</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_ExportarEvidencias" name="Generar Informe Forense para Control Interno"><bpmn:incoming>F_14_4</bpmn:incoming><bpmn:outgoing>F_14_5</bpmn:outgoing></bpmn:userTask>
+    <bpmn:endEvent id="End_14_Ok" name="Trazabilidad Verificada"><bpmn:incoming>F_14_5</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="F_14_1" sourceRef="Start_14" targetRef="Task_CapturarEvento" />
+    <bpmn:sequenceFlow id="F_14_2" sourceRef="Task_CapturarEvento" targetRef="Task_GuardarLogInmutable" />
+    <bpmn:sequenceFlow id="F_14_3" sourceRef="Task_GuardarLogInmutable" targetRef="Task_FiltrarLogs" />
+    <bpmn:sequenceFlow id="F_14_4" sourceRef="Task_FiltrarLogs" targetRef="Task_ExportarEvidencias" />
+    <bpmn:sequenceFlow id="F_14_5" sourceRef="Task_ExportarEvidencias" targetRef="End_14_Ok" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_14"><bpmndi:BPMNPlane id="Plane_14" bpmnElement="Collab_14">
+    <bpmndi:BPMNShape id="Part_Audit_di" bpmnElement="Part_Audit" isHorizontal="true"><dc:Bounds x="160" y="80" width="950" height="420" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Sec_14_di" bpmnElement="Lane_Sec_14" isHorizontal="true"><dc:Bounds x="190" y="80" width="920" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Sys_14_di" bpmnElement="Lane_Sys_14" isHorizontal="true"><dc:Bounds x="190" y="290" width="920" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Start_14_di" bpmnElement="Start_14"><dc:Bounds x="232" y="372" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_CapturarEvento_di" bpmnElement="Task_CapturarEvento"><dc:Bounds x="320" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_GuardarLogInmutable_di" bpmnElement="Task_GuardarLogInmutable"><dc:Bounds x="490" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_FiltrarLogs_di" bpmnElement="Task_FiltrarLogs"><dc:Bounds x="490" y="140" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_ExportarEvidencias_di" bpmnElement="Task_ExportarEvidencias"><dc:Bounds x="670" y="140" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="End_14_Ok_di" bpmnElement="End_14_Ok"><dc:Bounds x="852" y="162" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="F_14_1_di" bpmnElement="F_14_1"><di:waypoint x="268" y="390" /><di:waypoint x="320" y="390" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_14_2_di" bpmnElement="F_14_2"><di:waypoint x="450" y="390" /><di:waypoint x="490" y="390" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_14_3_di" bpmnElement="F_14_3"><di:waypoint x="555" y="350" /><di:waypoint x="555" y="220" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_14_4_di" bpmnElement="F_14_4"><di:waypoint x="620" y="180" /><di:waypoint x="670" y="180" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_14_5_di" bpmnElement="F_14_5"><di:waypoint x="800" y="180" /><di:waypoint x="852" y="180" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

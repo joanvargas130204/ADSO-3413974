@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_15" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collab_15">
+    <bpmn:participant id="Part_DevOps" name="Gobernanza DevOps, Pipeline CI/CD y Pase a Producción" processRef="Proc_DevOps" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_DevOps" name="Pipeline CI/CD y Despliegue" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_15">
+      <bpmn:lane id="Lane_Dev_15" name="Ingeniero de Software / Desarrollador">
+        <bpmn:flowNodeRef>Start_15</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CrearPR</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_ARB_15" name="Architecture Review Board (ARB) &amp; QA">
+        <bpmn:flowNodeRef>Task_RevisionCodigo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gate_AprobacionARB</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_PruebasQA</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gate_QA_GoNoGo</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_CI_15" name="Pipeline Automatizado (GitHub Actions / Jenkins)">
+        <bpmn:flowNodeRef>Task_PruebasUnitarias</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ValidarOpenAPI</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_DeployStaging</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_DeployProd</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_15_Ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_15" name="Nueva Funcionalidad Lista"><bpmn:outgoing>F_15_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:userTask id="Task_CrearPR" name="Crear Pull Request con Documentación SDD"><bpmn:incoming>F_15_1</bpmn:incoming><bpmn:outgoing>F_15_2</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_PruebasUnitarias" name="Ejecutar TDD y Cobertura &gt; 80%"><bpmn:incoming>F_15_2</bpmn:incoming><bpmn:outgoing>F_15_3</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_ValidarOpenAPI" name="Verificar Contratos OpenAPI y SonarQube"><bpmn:incoming>F_15_3</bpmn:incoming><bpmn:outgoing>F_15_4</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:userTask id="Task_RevisionCodigo" name="Revisión por Pares y Arquitectura (ARB)"><bpmn:incoming>F_15_4</bpmn:incoming><bpmn:outgoing>F_15_5</bpmn:outgoing></bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gate_AprobacionARB" name="¿Aprobado ARB?"><bpmn:incoming>F_15_5</bpmn:incoming><bpmn:outgoing>F_15_ARB_Ok</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_DeployStaging" name="Construir Docker y Desplegar en Staging"><bpmn:incoming>F_15_ARB_Ok</bpmn:incoming><bpmn:outgoing>F_15_6</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:userTask id="Task_PruebasQA" name="Ejecutar Pruebas E2E y Validación UX"><bpmn:incoming>F_15_6</bpmn:incoming><bpmn:outgoing>F_15_7</bpmn:outgoing></bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gate_QA_GoNoGo" name="¿Go a Producción?"><bpmn:incoming>F_15_7</bpmn:incoming><bpmn:outgoing>F_15_QA_Ok</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_DeployProd" name="Despliegue Blue/Green en Producción"><bpmn:incoming>F_15_QA_Ok</bpmn:incoming><bpmn:outgoing>F_15_8</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="End_15_Ok" name="Microservicio en Producción"><bpmn:incoming>F_15_8</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="F_15_1" sourceRef="Start_15" targetRef="Task_CrearPR" />
+    <bpmn:sequenceFlow id="F_15_2" sourceRef="Task_CrearPR" targetRef="Task_PruebasUnitarias" />
+    <bpmn:sequenceFlow id="F_15_3" sourceRef="Task_PruebasUnitarias" targetRef="Task_ValidarOpenAPI" />
+    <bpmn:sequenceFlow id="F_15_4" sourceRef="Task_ValidarOpenAPI" targetRef="Task_RevisionCodigo" />
+    <bpmn:sequenceFlow id="F_15_5" sourceRef="Task_RevisionCodigo" targetRef="Gate_AprobacionARB" />
+    <bpmn:sequenceFlow id="F_15_ARB_Ok" sourceRef="Gate_AprobacionARB" targetRef="Task_DeployStaging" />
+    <bpmn:sequenceFlow id="F_15_6" sourceRef="Task_DeployStaging" targetRef="Task_PruebasQA" />
+    <bpmn:sequenceFlow id="F_15_7" sourceRef="Task_PruebasQA" targetRef="Gate_QA_GoNoGo" />
+    <bpmn:sequenceFlow id="F_15_QA_Ok" sourceRef="Gate_QA_GoNoGo" targetRef="Task_DeployProd" />
+    <bpmn:sequenceFlow id="F_15_8" sourceRef="Task_DeployProd" targetRef="End_15_Ok" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_15"><bpmndi:BPMNPlane id="Plane_15" bpmnElement="Collab_15">
+    <bpmndi:BPMNShape id="Part_DevOps_di" bpmnElement="Part_DevOps" isHorizontal="true"><dc:Bounds x="160" y="80" width="1280" height="510" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Dev_15_di" bpmnElement="Lane_Dev_15" isHorizontal="true"><dc:Bounds x="190" y="80" width="1250" height="170" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_ARB_15_di" bpmnElement="Lane_ARB_15" isHorizontal="true"><dc:Bounds x="190" y="250" width="1250" height="170" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_CI_15_di" bpmnElement="Lane_CI_15" isHorizontal="true"><dc:Bounds x="190" y="420" width="1250" height="170" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Start_15_di" bpmnElement="Start_15"><dc:Bounds x="232" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_CrearPR_di" bpmnElement="Task_CrearPR"><dc:Bounds x="310" y="120" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_PruebasUnitarias_di" bpmnElement="Task_PruebasUnitarias"><dc:Bounds x="310" y="460" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_ValidarOpenAPI_di" bpmnElement="Task_ValidarOpenAPI"><dc:Bounds x="460" y="460" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_RevisionCodigo_di" bpmnElement="Task_RevisionCodigo"><dc:Bounds x="460" y="290" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gate_AprobacionARB_di" bpmnElement="Gate_AprobacionARB" isMarkerVisible="true"><dc:Bounds x="615" y="305" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_DeployStaging_di" bpmnElement="Task_DeployStaging"><dc:Bounds x="700" y="460" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_PruebasQA_di" bpmnElement="Task_PruebasQA"><dc:Bounds x="850" y="290" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gate_QA_GoNoGo_di" bpmnElement="Gate_QA_GoNoGo" isMarkerVisible="true"><dc:Bounds x="1005" y="305" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_DeployProd_di" bpmnElement="Task_DeployProd"><dc:Bounds x="1090" y="460" width="120" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="End_15_Ok_di" bpmnElement="End_15_Ok"><dc:Bounds x="1252" y="482" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="F_15_1_di" bpmnElement="F_15_1"><di:waypoint x="268" y="160" /><di:waypoint x="310" y="160" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_15_2_di" bpmnElement="F_15_2"><di:waypoint x="370" y="200" /><di:waypoint x="370" y="460" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_15_3_di" bpmnElement="F_15_3"><di:waypoint x="430" y="500" /><di:waypoint x="460" y="500" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_15_4_di" bpmnElement="F_15_4"><di:waypoint x="520" y="460" /><di:waypoint x="520" y="370" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_15_5_di" bpmnElement="F_15_5"><di:waypoint x="580" y="330" /><di:waypoint x="615" y="330" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_15_ARB_Ok_di" bpmnElement="F_15_ARB_Ok"><di:waypoint x="665" y="330" /><di:waypoint x="680" y="330" /><di:waypoint x="680" y="500" /><di:waypoint x="700" y="500" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_15_6_di" bpmnElement="F_15_6"><di:waypoint x="820" y="500" /><di:waypoint x="835" y="500" /><di:waypoint x="835" y="330" /><di:waypoint x="850" y="330" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_15_7_di" bpmnElement="F_15_7"><di:waypoint x="970" y="330" /><di:waypoint x="1005" y="330" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_15_QA_Ok_di" bpmnElement="F_15_QA_Ok"><di:waypoint x="1055" y="330" /><di:waypoint x="1070" y="330" /><di:waypoint x="1070" y="500" /><di:waypoint x="1090" y="500" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_15_8_di" bpmnElement="F_15_8"><di:waypoint x="1210" y="500" /><di:waypoint x="1252" y="500" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

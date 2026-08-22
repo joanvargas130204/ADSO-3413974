@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_08" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collab_08">
+    <bpmn:participant id="Part_ModHorario" name="Modificación o Cancelación Extraordinaria de Horario" processRef="Proc_ModHorario" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_ModHorario" name="Modificación Extraordinaria" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_08">
+      <bpmn:lane id="Lane_Coord_08" name="Coordinador Académico">
+        <bpmn:flowNodeRef>Start_08</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SolicitarAjuste</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Dir_08" name="Director de Centro">
+        <bpmn:flowNodeRef>Task_AutorizarDirector</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gate_AutorizadoDir</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Sys_08" name="Sistema de Horarios &amp; Notificaciones">
+        <bpmn:flowNodeRef>End_08_Rechazo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_VersionMenor</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_NotificarUrgente</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_08_Ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_08" name="Novedad Imprevista en Horario Publicado"><bpmn:outgoing>F_08_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:userTask id="Task_SolicitarAjuste" name="Registrar Justificación y Ajuste de Sesiones"><bpmn:incoming>F_08_1</bpmn:incoming><bpmn:outgoing>F_08_2</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_AutorizarDirector" name="Revisar Impacto y Autorizar Modificación"><bpmn:incoming>F_08_2</bpmn:incoming><bpmn:outgoing>F_08_3</bpmn:outgoing></bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gate_AutorizadoDir" name="¿Autorizado?"><bpmn:incoming>F_08_3</bpmn:incoming><bpmn:outgoing>F_08_No</bpmn:outgoing><bpmn:outgoing>F_08_Si</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:endEvent id="End_08_Rechazo" name="Ajuste Denegado"><bpmn:incoming>F_08_No</bpmn:incoming></bpmn:endEvent>
+    <bpmn:serviceTask id="Task_VersionMenor" name="Generar Versión Menor Inmutable (v1.1)"><bpmn:incoming>F_08_Si</bpmn:incoming><bpmn:outgoing>F_08_4</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:sendTask id="Task_NotificarUrgente" name="Enviar Notificación de Urgencia a Fichas e Instructores"><bpmn:incoming>F_08_4</bpmn:incoming><bpmn:outgoing>F_08_5</bpmn:outgoing></bpmn:sendTask>
+    <bpmn:endEvent id="End_08_Ok" name="Horario Actualizado en Producción"><bpmn:incoming>F_08_5</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="F_08_1" sourceRef="Start_08" targetRef="Task_SolicitarAjuste" />
+    <bpmn:sequenceFlow id="F_08_2" sourceRef="Task_SolicitarAjuste" targetRef="Task_AutorizarDirector" />
+    <bpmn:sequenceFlow id="F_08_3" sourceRef="Task_AutorizarDirector" targetRef="Gate_AutorizadoDir" />
+    <bpmn:sequenceFlow id="F_08_No" name="No" sourceRef="Gate_AutorizadoDir" targetRef="End_08_Rechazo" />
+    <bpmn:sequenceFlow id="F_08_Si" name="Sí" sourceRef="Gate_AutorizadoDir" targetRef="Task_VersionMenor" />
+    <bpmn:sequenceFlow id="F_08_4" sourceRef="Task_VersionMenor" targetRef="Task_NotificarUrgente" />
+    <bpmn:sequenceFlow id="F_08_5" sourceRef="Task_NotificarUrgente" targetRef="End_08_Ok" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_08"><bpmndi:BPMNPlane id="Plane_08" bpmnElement="Collab_08">
+    <bpmndi:BPMNShape id="Part_ModHorario_di" bpmnElement="Part_ModHorario" isHorizontal="true"><dc:Bounds x="160" y="80" width="1050" height="510" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Coord_08_di" bpmnElement="Lane_Coord_08" isHorizontal="true"><dc:Bounds x="190" y="80" width="1020" height="170" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Dir_08_di" bpmnElement="Lane_Dir_08" isHorizontal="true"><dc:Bounds x="190" y="250" width="1020" height="170" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Sys_08_di" bpmnElement="Lane_Sys_08" isHorizontal="true"><dc:Bounds x="190" y="420" width="1020" height="170" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Start_08_di" bpmnElement="Start_08"><dc:Bounds x="232" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_SolicitarAjuste_di" bpmnElement="Task_SolicitarAjuste"><dc:Bounds x="320" y="120" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_AutorizarDirector_di" bpmnElement="Task_AutorizarDirector"><dc:Bounds x="480" y="290" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gate_AutorizadoDir_di" bpmnElement="Gate_AutorizadoDir" isMarkerVisible="true"><dc:Bounds x="645" y="305" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="End_08_Rechazo_di" bpmnElement="End_08_Rechazo"><dc:Bounds x="652" y="482" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_VersionMenor_di" bpmnElement="Task_VersionMenor"><dc:Bounds x="730" y="460" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_NotificarUrgente_di" bpmnElement="Task_NotificarUrgente"><dc:Bounds x="890" y="460" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="End_08_Ok_di" bpmnElement="End_08_Ok"><dc:Bounds x="1052" y="482" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="F_08_1_di" bpmnElement="F_08_1"><di:waypoint x="268" y="160" /><di:waypoint x="320" y="160" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_08_2_di" bpmnElement="F_08_2"><di:waypoint x="450" y="160" /><di:waypoint x="465" y="160" /><di:waypoint x="465" y="330" /><di:waypoint x="480" y="330" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_08_3_di" bpmnElement="F_08_3"><di:waypoint x="610" y="330" /><di:waypoint x="645" y="330" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_08_No_di" bpmnElement="F_08_No"><di:waypoint x="670" y="355" /><di:waypoint x="670" y="482" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_08_Si_di" bpmnElement="F_08_Si"><di:waypoint x="695" y="330" /><di:waypoint x="795" y="330" /><di:waypoint x="795" y="460" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_08_4_di" bpmnElement="F_08_4"><di:waypoint x="860" y="500" /><di:waypoint x="890" y="500" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_08_5_di" bpmnElement="F_08_5"><di:waypoint x="1020" y="500" /><di:waypoint x="1052" y="500" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

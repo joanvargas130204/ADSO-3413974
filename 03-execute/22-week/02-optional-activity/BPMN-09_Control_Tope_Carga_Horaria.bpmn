@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_09" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collab_09">
+    <bpmn:participant id="Part_CargaHoraria" name="Control de Carga Horaria Docente y Topes Legales" processRef="Proc_CargaHoraria" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_CargaHoraria" name="Control de Carga Horaria" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_09">
+      <bpmn:lane id="Lane_Inst_09" name="Instructor">
+        <bpmn:flowNodeRef>Start_09</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_DeclararDisp</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Coord_09" name="Coordinador Académico">
+        <bpmn:flowNodeRef>Task_AsignarCarga</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ReajustarCarga</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Sys_09" name="Sistema de Gestión y Reglas Laborales">
+        <bpmn:flowNodeRef>Task_CalcularTope</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gate_Tope</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AprobarCarga</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_09_Ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_09" name="Inicio Período Académico"><bpmn:outgoing>F_09_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:userTask id="Task_DeclararDisp" name="Declarar Franjas de Disponibilidad"><bpmn:incoming>F_09_1</bpmn:incoming><bpmn:outgoing>F_09_2</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_AsignarCarga" name="Asignar Fichas y Horas Semanales"><bpmn:incoming>F_09_2</bpmn:incoming><bpmn:incoming>F_09_Retry</bpmn:incoming><bpmn:outgoing>F_09_3</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_CalcularTope" name="Validar Límite Máximo según Contrato (Planta / Contratista)"><bpmn:incoming>F_09_3</bpmn:incoming><bpmn:outgoing>F_09_4</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gate_Tope" name="¿Supera Tope Legal?"><bpmn:incoming>F_09_4</bpmn:incoming><bpmn:outgoing>F_09_Si</bpmn:outgoing><bpmn:outgoing>F_09_No</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_ReajustarCarga" name="Reajustar Horas o Asignar Co-Instructor"><bpmn:incoming>F_09_Si</bpmn:incoming><bpmn:outgoing>F_09_Retry</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_AprobarCarga" name="Consolidar y Bloquear Asignación Docente"><bpmn:incoming>F_09_No</bpmn:incoming><bpmn:outgoing>F_09_5</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="End_09_Ok" name="Carga Docente Oficializada"><bpmn:incoming>F_09_5</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="F_09_1" sourceRef="Start_09" targetRef="Task_DeclararDisp" />
+    <bpmn:sequenceFlow id="F_09_2" sourceRef="Task_DeclararDisp" targetRef="Task_AsignarCarga" />
+    <bpmn:sequenceFlow id="F_09_3" sourceRef="Task_AsignarCarga" targetRef="Task_CalcularTope" />
+    <bpmn:sequenceFlow id="F_09_4" sourceRef="Task_CalcularTope" targetRef="Gate_Tope" />
+    <bpmn:sequenceFlow id="F_09_Si" name="Sí" sourceRef="Gate_Tope" targetRef="Task_ReajustarCarga" />
+    <bpmn:sequenceFlow id="F_09_No" name="No" sourceRef="Gate_Tope" targetRef="Task_AprobarCarga" />
+    <bpmn:sequenceFlow id="F_09_Retry" sourceRef="Task_ReajustarCarga" targetRef="Task_AsignarCarga" />
+    <bpmn:sequenceFlow id="F_09_5" sourceRef="Task_AprobarCarga" targetRef="End_09_Ok" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_09"><bpmndi:BPMNPlane id="Plane_09" bpmnElement="Collab_09">
+    <bpmndi:BPMNShape id="Part_CargaHoraria_di" bpmnElement="Part_CargaHoraria" isHorizontal="true"><dc:Bounds x="160" y="80" width="1050" height="510" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Inst_09_di" bpmnElement="Lane_Inst_09" isHorizontal="true"><dc:Bounds x="190" y="80" width="1020" height="170" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Coord_09_di" bpmnElement="Lane_Coord_09" isHorizontal="true"><dc:Bounds x="190" y="250" width="1020" height="170" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Sys_09_di" bpmnElement="Lane_Sys_09" isHorizontal="true"><dc:Bounds x="190" y="420" width="1020" height="170" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Start_09_di" bpmnElement="Start_09"><dc:Bounds x="232" y="142" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_DeclararDisp_di" bpmnElement="Task_DeclararDisp"><dc:Bounds x="310" y="120" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_AsignarCarga_di" bpmnElement="Task_AsignarCarga"><dc:Bounds x="460" y="290" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_CalcularTope_di" bpmnElement="Task_CalcularTope"><dc:Bounds x="460" y="460" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gate_Tope_di" bpmnElement="Gate_Tope" isMarkerVisible="true"><dc:Bounds x="645" y="475" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_ReajustarCarga_di" bpmnElement="Task_ReajustarCarga"><dc:Bounds x="605" y="290" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_AprobarCarga_di" bpmnElement="Task_AprobarCarga"><dc:Bounds x="780" y="460" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="End_09_Ok_di" bpmnElement="End_09_Ok"><dc:Bounds x="972" y="482" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="F_09_1_di" bpmnElement="F_09_1"><di:waypoint x="268" y="160" /><di:waypoint x="310" y="160" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_09_2_di" bpmnElement="F_09_2"><di:waypoint x="440" y="160" /><di:waypoint x="525" y="160" /><di:waypoint x="525" y="290" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_09_3_di" bpmnElement="F_09_3"><di:waypoint x="525" y="370" /><di:waypoint x="525" y="460" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_09_4_di" bpmnElement="F_09_4"><di:waypoint x="590" y="500" /><di:waypoint x="645" y="500" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_09_Si_di" bpmnElement="F_09_Si"><di:waypoint x="670" y="475" /><di:waypoint x="670" y="370" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_09_Retry_di" bpmnElement="F_09_Retry"><di:waypoint x="605" y="330" /><di:waypoint x="590" y="330" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_09_No_di" bpmnElement="F_09_No"><di:waypoint x="695" y="500" /><di:waypoint x="780" y="500" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_09_5_di" bpmnElement="F_09_5"><di:waypoint x="910" y="500" /><di:waypoint x="972" y="500" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>

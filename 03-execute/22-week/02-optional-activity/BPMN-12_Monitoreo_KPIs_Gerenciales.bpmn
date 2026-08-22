@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Def_12" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+  <bpmn:collaboration id="Collab_12">
+    <bpmn:participant id="Part_KPI" name="Monitoreo Gerencial y Tableros KPI" processRef="Proc_KPI" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_KPI" name="Monitoreo Gerencial" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_12">
+      <bpmn:lane id="Lane_Dir_12" name="Director de Centro / Subdirector">
+        <bpmn:flowNodeRef>Start_12</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_VisualizarKPI</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ExportarInforme</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_12_Ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Engine_12" name="Motor de Analítica &amp; Métricas">
+        <bpmn:flowNodeRef>Task_CalcularOcupacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gate_Desviacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_EnviarAlertaDesv</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_12" name="Consulta Gerencial de Desempeño"><bpmn:outgoing>F_12_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:serviceTask id="Task_CalcularOcupacion" name="Calcular % Ocupación de Ambientes y Cumplimiento Docente"><bpmn:incoming>F_12_1</bpmn:incoming><bpmn:outgoing>F_12_2</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gate_Desviacion" name="¿Desviación Crítica?"><bpmn:incoming>F_12_2</bpmn:incoming><bpmn:outgoing>F_12_Si</bpmn:outgoing><bpmn:outgoing>F_12_No</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:sendTask id="Task_EnviarAlertaDesv" name="Disparar Alerta a Coordinación"><bpmn:incoming>F_12_Si</bpmn:incoming><bpmn:outgoing>F_12_3</bpmn:outgoing></bpmn:sendTask>
+    <bpmn:userTask id="Task_VisualizarKPI" name="Consultar Tablero con Filtros y Drill-Down por Sede"><bpmn:incoming>F_12_No</bpmn:incoming><bpmn:incoming>F_12_3</bpmn:incoming><bpmn:outgoing>F_12_4</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_ExportarInforme" name="Exportar Reporte Consolidado"><bpmn:incoming>F_12_4</bpmn:incoming><bpmn:outgoing>F_12_5</bpmn:outgoing></bpmn:userTask>
+    <bpmn:endEvent id="End_12_Ok" name="Revisión Gerencial Concluida"><bpmn:incoming>F_12_5</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="F_12_1" sourceRef="Start_12" targetRef="Task_CalcularOcupacion" />
+    <bpmn:sequenceFlow id="F_12_2" sourceRef="Task_CalcularOcupacion" targetRef="Gate_Desviacion" />
+    <bpmn:sequenceFlow id="F_12_Si" name="Sí" sourceRef="Gate_Desviacion" targetRef="Task_EnviarAlertaDesv" />
+    <bpmn:sequenceFlow id="F_12_No" name="No" sourceRef="Gate_Desviacion" targetRef="Task_VisualizarKPI" />
+    <bpmn:sequenceFlow id="F_12_3" sourceRef="Task_EnviarAlertaDesv" targetRef="Task_VisualizarKPI" />
+    <bpmn:sequenceFlow id="F_12_4" sourceRef="Task_VisualizarKPI" targetRef="Task_ExportarInforme" />
+    <bpmn:sequenceFlow id="F_12_5" sourceRef="Task_ExportarInforme" targetRef="End_12_Ok" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diag_12"><bpmndi:BPMNPlane id="Plane_12" bpmnElement="Collab_12">
+    <bpmndi:BPMNShape id="Part_KPI_di" bpmnElement="Part_KPI" isHorizontal="true"><dc:Bounds x="160" y="80" width="1050" height="420" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Dir_12_di" bpmnElement="Lane_Dir_12" isHorizontal="true"><dc:Bounds x="190" y="80" width="1020" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Lane_Engine_12_di" bpmnElement="Lane_Engine_12" isHorizontal="true"><dc:Bounds x="190" y="290" width="1020" height="210" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Start_12_di" bpmnElement="Start_12"><dc:Bounds x="232" y="162" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_CalcularOcupacion_di" bpmnElement="Task_CalcularOcupacion"><dc:Bounds x="310" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Gate_Desviacion_di" bpmnElement="Gate_Desviacion" isMarkerVisible="true"><dc:Bounds x="485" y="365" width="50" height="50" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_EnviarAlertaDesv_di" bpmnElement="Task_EnviarAlertaDesv"><dc:Bounds x="580" y="350" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_VisualizarKPI_di" bpmnElement="Task_VisualizarKPI"><dc:Bounds x="750" y="140" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="Task_ExportarInforme_di" bpmnElement="Task_ExportarInforme"><dc:Bounds x="910" y="140" width="130" height="80" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="End_12_Ok_di" bpmnElement="End_12_Ok"><dc:Bounds x="1082" y="162" width="36" height="36" /></bpmndi:BPMNShape>
+    <bpmndi:BPMNEdge id="F_12_1_di" bpmnElement="F_12_1"><di:waypoint x="268" y="180" /><di:waypoint x="290" y="180" /><di:waypoint x="290" y="390" /><di:waypoint x="310" y="390" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_12_2_di" bpmnElement="F_12_2"><di:waypoint x="440" y="390" /><di:waypoint x="485" y="390" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_12_Si_di" bpmnElement="F_12_Si"><di:waypoint x="535" y="390" /><di:waypoint x="580" y="390" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_12_No_di" bpmnElement="F_12_No"><di:waypoint x="510" y="365" /><di:waypoint x="510" y="180" /><di:waypoint x="750" y="180" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_12_3_di" bpmnElement="F_12_3"><di:waypoint x="710" y="390" /><di:waypoint x="730" y="390" /><di:waypoint x="730" y="180" /><di:waypoint x="750" y="180" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_12_4_di" bpmnElement="F_12_4"><di:waypoint x="880" y="180" /><di:waypoint x="910" y="180" /></bpmndi:BPMNEdge>
+    <bpmndi:BPMNEdge id="F_12_5_di" bpmnElement="F_12_5"><di:waypoint x="1040" y="180" /><di:waypoint x="1082" y="180" /></bpmndi:BPMNEdge>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</bpmn:definitions>
