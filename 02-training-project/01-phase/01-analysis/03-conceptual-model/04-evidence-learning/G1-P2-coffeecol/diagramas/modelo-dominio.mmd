@@ -1,0 +1,114 @@
+classDiagram
+  direction LR
+  class Usuario {
+    nombre
+    correo
+  }
+  class Cliente {
+    fechaVinculacion
+    fechaCumpleanos
+    puntosAcumulados
+  }
+  class Administrador {
+    nombreUsuario
+  }
+  class NivelFidelizacion {
+    nombre
+    puntosMinimos
+  }
+  class Recompensa {
+    nombre
+    puntosRequeridos
+  }
+  class TransaccionPuntos {
+    fecha
+    tipo
+    puntos
+    motivo
+  }
+  class Producto {
+    nombre
+    descripcion
+    notasAromaticas
+    precio
+    precioAnterior
+    stock
+    imagen
+    valoracion
+    estado
+  }
+  class Categoria {
+    nombre
+  }
+  class Municipio {
+    nombre
+    altitud
+    notasCata
+  }
+  class Carrito {
+    fechaActualizacion
+  }
+  class ItemCarrito {
+    cantidad
+  }
+  class Pedido {
+    codigo
+    fecha
+    estado
+    subtotal
+    valorDespacho
+    total
+  }
+  class LineaPedido {
+    cantidad
+    precioUnitario
+  }
+  class DireccionEntrega {
+    destinatario
+    direccion
+    telefono
+  }
+  class Favorito {
+    fechaAgregado
+  }
+  class MensajeContacto {
+    nombre
+    empresaFinca
+    telefono
+    correo
+    mensaje
+    fechaEnvio
+  }
+  class IntentoAcceso {
+    fechaHora
+    direccionIp
+    exitoso
+  }
+  class Aliado {
+    nombre
+    descripcion
+    logo
+  }
+  Usuario <|-- Cliente
+  Usuario <|-- Administrador
+  Carrito "0..*" --> "0..1" Cliente : pertenece a
+  Carrito "1" *-- "0..*" ItemCarrito : contiene
+  ItemCarrito "0..*" --> "1" Producto : refiere
+  Cliente "1" --> "0..*" Pedido : realiza
+  Pedido "1" *-- "1..*" LineaPedido : se compone de
+  LineaPedido "0..*" --> "1" Producto : vende
+  Cliente "1" --> "0..*" DireccionEntrega : guarda
+  Pedido "0..*" --> "1" DireccionEntrega : se envía a
+  DireccionEntrega "0..*" --> "1" Municipio : ubicada en
+  Cliente "1" --> "0..*" Favorito : marca
+  Favorito "0..*" --> "1" Producto : es marcado
+  Producto "0..*" --> "1" Categoria : pertenece a
+  Cliente "1" --> "0..*" TransaccionPuntos : acumula
+  TransaccionPuntos "0..*" --> "0..1" Pedido : se origina en
+  TransaccionPuntos "0..*" --> "0..1" Recompensa : canjea
+  Cliente ..> NivelFidelizacion : nivel deducido de sus puntos
+  MensajeContacto "0..*" --> "0..1" Municipio : desde
+  IntentoAcceso "0..*" --> "0..1" Administrador : contra la cuenta de
+  note for LineaPedido "Clase de asociación entre Pedido y Producto"
+  note for Favorito "Clase de asociación entre Cliente y Producto"
+  note for NivelFidelizacion "El nivel se deduce de los puntos (Espresso, Plata, Oro)"

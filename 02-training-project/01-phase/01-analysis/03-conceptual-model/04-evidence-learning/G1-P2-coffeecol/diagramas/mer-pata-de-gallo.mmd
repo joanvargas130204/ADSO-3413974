@@ -1,0 +1,126 @@
+erDiagram
+  CLIENTE ||--o{ DIRECCION_ENTREGA : guarda
+  CLIENTE ||--o{ PEDIDO : realiza
+  CLIENTE ||--o{ FAVORITO : marca
+  CLIENTE ||--o{ TRANSACCION_PUNTOS : acumula
+  PRODUCTO ||--o{ FAVORITO : es_marcado
+  PRODUCTO ||--o{ DETALLE_PEDIDO : se_vende_en
+  PEDIDO ||--|{ DETALLE_PEDIDO : se_compone_de
+  DIRECCION_ENTREGA ||--o{ PEDIDO : recibe
+  MUNICIPIO ||--o{ DIRECCION_ENTREGA : ubica
+  MUNICIPIO |o--o{ CONTACTO : origina
+  CATEGORIA ||--o{ PRODUCTO : clasifica
+  PEDIDO |o--o{ TRANSACCION_PUNTOS : genera
+  RECOMPENSA |o--o{ TRANSACCION_PUNTOS : se_canjea_en
+  ADMINISTRADOR |o--o{ INTENTO_LOGIN_ADMIN : recibe
+  CLIENTE {
+    int id_cliente PK
+    string uid_firebase UK
+    string nombre
+    string correo UK
+    date fecha_vinculacion
+    date fecha_cumpleanos
+    int puntos_acumulados
+  }
+  ADMINISTRADOR {
+    int id_admin PK
+    string usuario UK
+    string nombre
+    string hash_contrasena
+  }
+  DIRECCION_ENTREGA {
+    int id_cliente PK, FK
+    int consecutivo PK
+    int id_municipio FK
+    string destinatario
+    string direccion
+    string telefono
+  }
+  MUNICIPIO {
+    int id_municipio PK
+    string nombre
+    int altitud
+    string notas_cata
+  }
+  CATEGORIA {
+    int id_categoria PK
+    string nombre
+  }
+  PRODUCTO {
+    int id_producto PK
+    string nombre
+    string descripcion
+    string notas_aromaticas
+    decimal precio
+    decimal precio_anterior
+    int stock
+    string imagen
+    decimal valoracion
+    string estado
+    int id_categoria FK
+  }
+  PEDIDO {
+    int id_pedido PK
+    string codigo UK
+    date fecha
+    string estado
+    decimal subtotal
+    decimal valor_despacho
+    decimal total
+    int id_cliente FK
+    int consecutivo_direccion FK
+  }
+  DETALLE_PEDIDO {
+    int id_pedido PK, FK
+    int id_producto PK, FK
+    int cantidad
+    decimal precio_unitario
+  }
+  FAVORITO {
+    int id_cliente PK, FK
+    int id_producto PK, FK
+    date fecha_agregado
+  }
+  TRANSACCION_PUNTOS {
+    int id_transaccion PK
+    int id_cliente FK
+    int id_pedido FK
+    int id_recompensa FK
+    date fecha
+    string tipo
+    int puntos
+    string motivo
+  }
+  RECOMPENSA {
+    int id_recompensa PK
+    string nombre
+    int puntos_requeridos
+  }
+  NIVEL_FIDELIZACION {
+    int id_nivel PK
+    string nombre
+    int puntos_minimos
+  }
+  CONTACTO {
+    int id_contacto PK
+    int id_municipio FK
+    string nombre
+    string empresa_finca
+    string telefono
+    string correo
+    string mensaje
+    date fecha_envio
+  }
+  INTENTO_LOGIN_ADMIN {
+    int id_intento PK
+    int id_admin FK
+    string direccion_ip
+    datetime fecha_hora
+    boolean exitoso
+  }
+  ALIADO {
+    int id_aliado PK
+    string nombre
+    string descripcion
+    string logo
+  }

@@ -1,0 +1,34 @@
+flowchart TB
+  inicio(( )):::ini
+  subgraph V["Calle: Visitante"]
+    v1["Pulsa Iniciar sesión"]
+    v2["Elige el método de acceso"]
+    v3["Ingresa su correo"]
+    v4["Abre el enlace recibido en su correo"]
+    v5["Aprueba el consentimiento de identidad"]
+  end
+  subgraph S["Calle: Sistema"]
+    s1["Muestra las opciones de acceso"]
+    s0{"¿Método elegido?"}
+    s2["Solicita la identidad al servicio externo"]
+    s3{"¿El servicio externo responde?"}
+    s3e["Avisa el problema y permite reintentar"]
+    s4["Envía el enlace de un solo uso al correo"]
+    s6["Registra o actualiza al usuario (CU-17)"]
+    s7["Abre la sesión y lleva al usuario a su módulo"]
+  end
+  subgraph F["Calle: Firebase Authentication"]
+    f2{"¿El usuario aprueba?"}
+    f3["Valida la identidad y devuelve su confirmación"]
+  end
+  fin((( ))):::fin
+  inicio --> v1 --> s1 --> v2 --> s0
+  s0 -->|"[Google]"| s2 --> s3
+  s0 -->|"[enlace mágico]  A1"| v3 --> s4 --> v4 --> f3
+  s3 -->|"[responde]"| v5 --> f2
+  s3 -->|"[no responde]  E2"| s3e --> fin
+  f2 -->|"[aprueba]"| f3
+  f2 -->|"[cancela]  E1"| fin
+  f3 --> s6 --> s7 --> fin
+  classDef ini fill:#000,stroke:#000
+  classDef fin fill:#fff,stroke:#000,stroke-width:3px

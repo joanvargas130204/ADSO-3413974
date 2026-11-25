@@ -1,0 +1,41 @@
+flowchart TB
+  inicio(( )):::ini
+  subgraph C["Calle: Cliente registrado"]
+    c1["Abre el checkout desde el carrito"]
+    c2["Diligencia los datos de entrega"]
+    c3["Confirma dirección, teléfono y municipio"]
+    c4["Acepta la política de tratamiento de datos"]
+    c5["Revisa el resumen y confirma el pedido"]
+  end
+  subgraph S["Calle: Sistema"]
+    s1{"¿Tiene direcciones guardadas?"}
+    s2["Precarga los datos de entrega"]
+    s3{"¿Datos de entrega válidos? (CU-19)"}
+    s3e["Resalta los campos con error"]
+    s4{"¿Aceptó la política de datos?"}
+    s4e["Informa que la aceptación es obligatoria"]
+    s5["Muestra el resumen con el total recalculado y el despacho desglosado"]
+    s6{"¿Hay existencias de todos los productos?"}
+    s6e["Informa los productos agotados"]
+    s7{"¿Se pudo registrar el pedido?"}
+    s7e["Deshace la operación e informa el error"]
+    s8["Registra el pedido pendiente y acredita los puntos (CU-20)"]
+    s9["Muestra el número de pedido y vacía el carrito"]
+  end
+  fin((( ))):::fin
+  inicio --> c1 --> s1
+  s1 -->|"[con direcciones guardadas]"| s2 --> c3
+  s1 -->|"[sin direcciones guardadas]  A1"| c2 --> c3
+  c3 --> s3
+  s3 -->|"[datos válidos]"| c4
+  s3 -->|"[datos inválidos]  E1"| s3e --> c3
+  c4 --> s4
+  s4 -->|"[aceptó]"| s5
+  s4 -->|"[no aceptó]  E2"| s4e --> fin
+  s5 --> c5 --> s6
+  s6 -->|"[hay existencias]"| s7
+  s6 -->|"[producto agotado]  E3"| s6e --> fin
+  s7 -->|"[registro exitoso]"| s8 --> s9 --> fin
+  s7 -->|"[registro fallido]  E4"| s7e --> fin
+  classDef ini fill:#000,stroke:#000
+  classDef fin fill:#fff,stroke:#000,stroke-width:3px
