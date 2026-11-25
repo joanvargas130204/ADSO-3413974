@@ -1,0 +1,6 @@
+CHEQUEOS OK: 39
+FALLAS: 4
+  FALLA: Toda clase de dominio tiene al menos un requisito -> {'Usuario'}
+  FALLA: Relación Cliente-NivelFidelizacion: dominio y MER coinciden -> dominio=True, MER=False
+  FALLA: 03-modelo-de-dominio.md: el conteo de clases con 2+ atributos es el real -> dice 16, real 13
+  FALLA: CU-11 permite retirar y Producto tiene estado -> Producto sin atributo de estado/retiro
