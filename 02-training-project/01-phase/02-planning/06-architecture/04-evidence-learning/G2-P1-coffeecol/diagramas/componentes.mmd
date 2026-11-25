@@ -1,0 +1,21 @@
+flowchart LR
+  C1["C1 Interfaz web<br/>provee IPresentacion"]
+  C2["C2 API REST<br/>provee IApiRest"]
+  C3["C3 Servicio de pedidos<br/>provee ICheckout"]
+  C4["C4 Servicio de fidelización<br/>provee IPuntos"]
+  C5["C5 Servicio de autenticación<br/>provee IAutenticacion"]
+  C6["C6 Servicio de catálogo<br/>provee ICatalogo"]
+  C7["C7 Acceso a datos<br/>provee IDatosPedido · IDatosProducto · IDatosUsuario"]
+  EXT(["Firebase Authentication<br/>IIdentidadExterna"])
+  BD[("MariaDB<br/>IBaseDatos")]
+  C1 -- "requiere IApiRest" --> C2
+  C2 -- "requiere ICheckout" --> C3
+  C2 -- "requiere IAutenticacion" --> C5
+  C2 -- "requiere ICatalogo" --> C6
+  C3 -- "requiere IPuntos" --> C4
+  C3 -- "requiere IDatosPedido · IDatosProducto" --> C7
+  C4 -- "requiere IDatosUsuario" --> C7
+  C5 -- "requiere IDatosUsuario" --> C7
+  C5 -- "requiere IIdentidadExterna" --> EXT
+  C6 -- "requiere IDatosProducto" --> C7
+  C7 -- "requiere IBaseDatos" --> BD

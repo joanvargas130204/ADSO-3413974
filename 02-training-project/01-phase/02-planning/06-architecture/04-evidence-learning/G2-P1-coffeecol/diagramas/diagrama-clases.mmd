@@ -1,0 +1,177 @@
+classDiagram
+  direction TB
+  class Usuario {
+    <<abstract>>
+    -idUsuario: int
+    -nombre: String
+    -correo: String
+    +obtenerRol() String
+  }
+  class Cliente {
+    -uidFirebase: String
+    -puntosAcumulados: int
+    -fechaVinculacion: Date
+    +sumarPuntos(puntos: int) void
+  }
+  class Administrador {
+    -usuario: String
+    -hashContrasena: String
+    +verificarClave(clave: String) boolean
+  }
+  class Producto {
+    -idProducto: int
+    -nombre: String
+    -precio: float
+    -stock: int
+    -estado: String
+    -imagen: String
+    +hayExistencias(cantidad: int) boolean
+    +retirar() void
+  }
+  class Pedido {
+    -idPedido: int
+    -codigo: String
+    -fecha: DateTime
+    -estado: String
+    -subtotal: float
+    -valorDespacho: float
+    -total: float
+    +calcularTotal() float
+    +cambiarEstado(nuevo: String) void
+  }
+  class LineaPedido {
+    -cantidad: int
+    -precioUnitario: float
+    +calcularSubtotal() float
+  }
+  class DireccionEntrega {
+    -consecutivo: int
+    -destinatario: String
+    -direccion: String
+    -telefono: String
+    -idMunicipio: int
+  }
+  class TransaccionPuntos {
+    -idTransaccion: int
+    -fecha: DateTime
+    -tipo: String
+    -puntos: int
+    -motivo: String
+  }
+  class Carrito {
+    -items: ItemCarrito[]
+    +agregar(idProducto: int, cantidad: int) void
+    +quitar(idProducto: int) void
+    +calcularSubtotal() float
+    +vaciar() void
+  }
+  class ItemCarrito {
+    -idProducto: int
+    -cantidad: int
+    -precioVisible: float
+  }
+  class CheckoutFacade {
+    +confirmarPedido(cliente: Cliente, items: ItemCarrito[], direccion: DireccionEntrega, aceptoPolitica: boolean) Pedido
+  }
+  class ValidadorEntrega {
+    +validar(direccion: DireccionEntrega, correo: String) String[]
+  }
+  class CalculadoraDespacho {
+    <<interface>>
+    +calcular(subtotal: float) float
+  }
+  class DespachoPorUmbral {
+    -costo: float
+    -umbralGratis: float
+    +calcular(subtotal: float) float
+  }
+  class DespachoFijo {
+    -costo: float
+    +calcular(subtotal: float) float
+  }
+  class PuntosService {
+    +acreditarPorCompra(cliente: Cliente, pedido: Pedido) TransaccionPuntos
+    +calcularNivel(puntos: int) String
+  }
+  class AuthService {
+    +iniciarSesion(credencial: String) Usuario
+    +sincronizarCliente(uid: String, correo: String, nombre: String) Cliente
+  }
+  class Autenticador {
+    <<interface>>
+    +autenticar(credencial: String) Usuario
+  }
+  class AutenticadorFirebase {
+    +autenticar(credencial: String) Usuario
+  }
+  class AutenticadorJwt {
+    -minutosVigencia: int
+    +autenticar(credencial: String) Usuario
+  }
+  class CatalogoService {
+    +crearProducto(nombre: String, precio: float, stock: int, idCategoria: int) Producto
+    +retirarProducto(idProducto: int) void
+    +buscar(texto: String, orden: String) Producto[]
+  }
+  class Conexion {
+    <<singleton>>
+    -instancia: Conexion
+    -pdo: PDO
+    +obtenerInstancia() Conexion
+    +obtenerPdo() PDO
+  }
+  class PedidoRepository {
+    +guardar(pedido: Pedido) int
+    +listarPorCliente(idCliente: int) Pedido[]
+  }
+  class ProductoRepository {
+    +buscarPorId(idProducto: int) Producto
+    +guardar(producto: Producto) int
+    +descontarStock(idProducto: int, cantidad: int) void
+  }
+  class UsuarioRepository {
+    +buscarPorUid(uid: String) Cliente
+    +guardarCliente(cliente: Cliente) int
+    +buscarAdmin(usuario: String) Administrador
+  }
+  class PedidoController {
+    +crear(json: String) String
+    +cambiarEstado(idPedido: int, estado: String) String
+  }
+  class AuthController {
+    +acceder(json: String) String
+  }
+  class ProductoController {
+    +crear(json: String) String
+    +retirar(idProducto: int) String
+  }
+  Usuario <|-- Cliente
+  Usuario <|-- Administrador
+  Cliente "1" --> "0..*" Pedido : realiza
+  Cliente "1" --> "0..*" DireccionEntrega : guarda
+  Cliente "1" --> "0..*" TransaccionPuntos : acumula
+  Pedido "1" *-- "1..*" LineaPedido : se compone de
+  LineaPedido "0..*" --> "1" Producto : vende
+  Pedido "0..*" --> "1" DireccionEntrega : se envía a
+  TransaccionPuntos "0..*" --> "0..1" Pedido : se origina en
+  Carrito "1" *-- "0..*" ItemCarrito : contiene
+  ItemCarrito "0..*" --> "1" Producto : refiere
+  PedidoController "1" --> "1" CheckoutFacade : delega en
+  AuthController "1" --> "1" AuthService : delega en
+  ProductoController "1" --> "1" CatalogoService : delega en
+  CheckoutFacade "1" --> "1" ValidadorEntrega : valida con
+  CheckoutFacade "1" --> "1" CalculadoraDespacho : calcula con
+  CheckoutFacade "1" --> "1" PuntosService : acredita con
+  CheckoutFacade "1" --> "1" PedidoRepository : guarda con
+  CheckoutFacade "1" --> "1" ProductoRepository : descuenta con
+  CalculadoraDespacho <|.. DespachoPorUmbral
+  CalculadoraDespacho <|.. DespachoFijo
+  PuntosService "1" --> "1" UsuarioRepository : actualiza con
+  AuthService "1" --> "1" Autenticador : autentica con
+  AuthService "1" --> "1" UsuarioRepository : sincroniza con
+  Autenticador <|.. AutenticadorFirebase
+  Autenticador <|.. AutenticadorJwt
+  CatalogoService "1" --> "1" ProductoRepository : persiste con
+  PedidoRepository ..> Conexion : usa
+  ProductoRepository ..> Conexion : usa
+  UsuarioRepository ..> Conexion : usa

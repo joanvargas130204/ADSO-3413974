@@ -1,0 +1,19 @@
+flowchart TB
+  subgraph P["Capa de presentación (navegador)"]
+    UI["Interfaz web: Bootstrap 5.3 + JavaScript ES6+<br/>Carrito en el navegador"]
+  end
+  subgraph L["Capa lógica (PHP 8.5 sobre Apache)"]
+    CT["Controladores REST<br/>PedidoController · AuthController · ProductoController"]
+    SV["Servicios<br/>CheckoutFacade · PuntosService · AuthService · CatalogoService"]
+  end
+  subgraph D["Capa de datos"]
+    RP["Repositorios + Conexión (PDO)"]
+    DB[("MariaDB 10.4<br/>esquema coffeecol")]
+  end
+  FB(["Firebase Authentication<br/>(servicio externo)"])
+  UI -- "HTTPS · JSON" --> CT
+  CT --> SV
+  SV --> RP
+  RP -- "sentencias preparadas" --> DB
+  SV -. "verificar identidad" .-> FB
+  UI -. "inicio de sesión (popup / enlace)" .-> FB

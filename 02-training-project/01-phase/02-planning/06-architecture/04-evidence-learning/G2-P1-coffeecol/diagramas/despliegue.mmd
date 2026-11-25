@@ -1,0 +1,18 @@
+flowchart LR
+  subgraph N1["Nodo 1 · Cliente (PC o celular)"]
+    A1["Navegador: HTML5, CSS3, JS<br/>carrito en el navegador"]
+  end
+  subgraph N2["Nodo 2 · Servidor de aplicación (Apache 2.4 + PHP 8.5, XAMPP)"]
+    A2["API REST PHP: controladores, servicios, repositorios"]
+    A3["Archivo .env fuera de la carpeta pública"]
+  end
+  subgraph N3["Nodo 3 · Servidor de datos (MariaDB 10.4)"]
+    A4[("Esquema coffeecol")]
+  end
+  subgraph N4["Nodo 4 · Nube Google"]
+    A5["Firebase Authentication"]
+  end
+  A1 -- "HTTPS 443 · JSON" --> A2
+  A2 -- "TCP 3306 · PDO · solo red local" --> A4
+  A2 -- "HTTPS 443 · verifica identidad" --> A5
+  A1 -- "HTTPS 443 · inicio de sesión" --> A5
