@@ -1,0 +1,127 @@
+erDiagram
+  CATEGORIA ||--o{ PRODUCTO : "id_categoria"
+  CLIENTE ||--o{ DIRECCION_ENTREGA : "id_cliente"
+  MUNICIPIO ||--o{ DIRECCION_ENTREGA : "id_municipio"
+  CLIENTE ||--o{ PEDIDO : "id_cliente"
+  DIRECCION_ENTREGA ||--o{ PEDIDO : "id_cliente+consecutivo_direccion"
+  PEDIDO ||--o{ DETALLE_PEDIDO : "id_pedido"
+  PRODUCTO ||--o{ DETALLE_PEDIDO : "id_producto"
+  CLIENTE ||--o{ FAVORITO : "id_cliente"
+  PRODUCTO ||--o{ FAVORITO : "id_producto"
+  CLIENTE ||--o{ TRANSACCION_PUNTOS : "id_cliente"
+  PEDIDO ||--o{ TRANSACCION_PUNTOS : "id_pedido"
+  RECOMPENSA ||--o{ TRANSACCION_PUNTOS : "id_recompensa"
+  MUNICIPIO ||--o{ CONTACTO : "id_municipio"
+  ADMINISTRADOR ||--o{ INTENTO_LOGIN_ADMIN : "id_admin"
+  CLIENTE {
+    INT id_cliente PK
+    VARCHAR_128 uid_firebase
+    VARCHAR_100 nombre
+    VARCHAR_120 correo
+    DATE fecha_vinculacion
+    DATE fecha_cumpleanos
+    INT puntos_acumulados
+  }
+  ADMINISTRADOR {
+    INT id_admin PK
+    VARCHAR_40 usuario
+    VARCHAR_100 nombre
+    VARCHAR_120 correo
+    VARCHAR_255 hash_contrasena
+  }
+  MUNICIPIO {
+    INT id_municipio PK
+    VARCHAR_60 nombre
+    INT altitud
+    VARCHAR_200 notas_cata
+  }
+  CATEGORIA {
+    INT id_categoria PK
+    VARCHAR_50 nombre
+  }
+  PRODUCTO {
+    INT id_producto PK
+    VARCHAR_100 nombre
+    VARCHAR_500 descripcion
+    VARCHAR_150 notas_aromaticas
+    DECIMAL_10_2 precio
+    DECIMAL_10_2 precio_anterior
+    INT stock
+    VARCHAR_255 imagen
+    DECIMAL_2_1 valoracion
+    VARCHAR_10 estado
+    INT id_categoria FK
+  }
+  DIRECCION_ENTREGA {
+    INT id_cliente PK, FK
+    INT consecutivo PK
+    INT id_municipio FK
+    VARCHAR_100 destinatario
+    VARCHAR_150 direccion
+    CHAR_10 telefono
+  }
+  PEDIDO {
+    INT id_pedido PK
+    VARCHAR_20 codigo
+    DATETIME fecha
+    VARCHAR_12 estado
+    DECIMAL_12_2 subtotal
+    DECIMAL_10_2 valor_despacho
+    DECIMAL_12_2 total
+    INT id_cliente FK
+    INT consecutivo_direccion FK
+  }
+  DETALLE_PEDIDO {
+    INT id_pedido PK, FK
+    INT id_producto PK, FK
+    INT cantidad
+    DECIMAL_10_2 precio_unitario
+  }
+  FAVORITO {
+    INT id_cliente PK, FK
+    INT id_producto PK, FK
+    DATE fecha_agregado
+  }
+  RECOMPENSA {
+    INT id_recompensa PK
+    VARCHAR_80 nombre
+    INT puntos_requeridos
+  }
+  NIVEL_FIDELIZACION {
+    INT id_nivel PK
+    VARCHAR_30 nombre
+    INT puntos_minimos
+  }
+  TRANSACCION_PUNTOS {
+    INT id_transaccion PK
+    INT id_cliente FK
+    INT id_pedido FK
+    INT id_recompensa FK
+    DATETIME fecha
+    VARCHAR_10 tipo
+    INT puntos
+    VARCHAR_100 motivo
+  }
+  CONTACTO {
+    INT id_contacto PK
+    INT id_municipio FK
+    VARCHAR_100 nombre
+    VARCHAR_100 empresa_finca
+    VARCHAR_15 telefono
+    VARCHAR_120 correo
+    VARCHAR_1000 mensaje
+    DATETIME fecha_envio
+  }
+  INTENTO_LOGIN_ADMIN {
+    INT id_intento PK
+    INT id_admin FK
+    VARCHAR_45 direccion_ip
+    DATETIME fecha_hora
+    TINYINT exitoso
+  }
+  ALIADO {
+    INT id_aliado PK
+    VARCHAR_100 nombre
+    VARCHAR_300 descripcion
+    VARCHAR_255 logo
+  }
