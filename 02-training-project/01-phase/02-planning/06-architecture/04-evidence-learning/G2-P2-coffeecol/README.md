@@ -52,7 +52,7 @@
 - [ ] B6 ≥ 6 políticas de seguridad (con hash y sal en contraseñas y TLS) y matriz de ≥ 3 roles
 - [ ] B7 Lista de chequeo de ≥ 20 criterios, diligenciada sobre P1 y P2, con evidencia
 
-**Nota sobre el motor:** la evidencia de ejecución es de **SQLite 3.53**; el script de MariaDB 10.4 (motor del SRS) está generado del mismo modelo pero `<completar: ejecutado en XAMPP el __/__/2026 y captura en verificacion/>`.
+**Nota sobre el motor:** la evidencia de pruebas (inserciones válidas y 16 violaciones rechazadas) es de **SQLite 3.53**. Además, el script de MariaDB se ejecutó completo el 27/11/2026 en **MariaDB 10.4.32 (XAMPP)** sin errores: 15 tablas InnoDB, 14 FK y 20 CHECK (ver `verificacion/evidencia-mariadb.txt` y `verificacion/captura-mariadb-phpmyadmin.jpg`).
 
 ## 5. Historial de commits
 

@@ -1,0 +1,11 @@
+Ejecución real en MariaDB — 27/11/2026 (XAMPP, phpMyAdmin 5.2.1)
+Script: sql/esquema-mariadb.sql (ejecutado completo, sin errores)
+Versión del servidor: 10.4.32-MariaDB
+Tablas en la base coffeecol: 15 (todas ENGINE=InnoDB)
+  administrador, aliado, categoria, cliente, contacto, detalle_pedido,
+  direccion_entrega, favorito, intento_login_admin, municipio,
+  nivel_fidelizacion, pedido, producto, recompensa, transaccion_puntos
+Consultas a information_schema.table_constraints (schema coffeecol):
+  FOREIGN KEY = 14
+  CHECK       = 20
+Captura: captura-mariadb-phpmyadmin.jpg
