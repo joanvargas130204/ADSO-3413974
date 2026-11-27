@@ -1,0 +1,34 @@
+Motor: SQLite 3.53.1
+[OK] Script ejecutado sin errores: 15 tablas creadas
+[OK] dato válido: INSERT INTO categoria VALUES (1,'Tueste medio
+[OK] dato válido: INSERT INTO municipio VALUES (1,'Pitalito',13
+[OK] dato válido: INSERT INTO cliente VALUES (1,'uidA','Ana Pér
+[OK] dato válido: INSERT INTO administrador VALUES (1,'admin','
+[OK] dato válido: INSERT INTO producto VALUES (1,'Café 500 g','
+[OK] dato válido: INSERT INTO direccion_entrega VALUES (1,1,1,'
+[OK] dato válido: INSERT INTO pedido VALUES (1,'CC-0001','2026-
+[OK] dato válido: INSERT INTO detalle_pedido VALUES (1,1,2,4500
+[OK] dato válido: INSERT INTO transaccion_puntos VALUES (1,1,1,
+[OK] dato válido: INSERT INTO favorito VALUES (1,1,'2026-11-25'
+[OK] rechazado por CHECK: precio <= 0 -> CHECK constraint failed: ck_producto_precio
+[OK] rechazado por CHECK: stock negativo -> CHECK constraint failed: ck_producto_stock
+[OK] rechazado por CHECK: estado de producto inválido -> CHECK constraint failed: ck_producto_estado
+[OK] rechazado por UNIQUE: correo repetido -> UNIQUE constraint failed: cliente.correo
+[OK] rechazado por CHECK: teléfono de 9 dígitos -> CHECK constraint failed: ck_dir_telefono
+[OK] rechazado por CHECK: total distinto de subtotal + despacho -> CHECK constraint failed: ck_pedido_total
+[OK] rechazado por CHECK: estado de pedido inválido -> CHECK constraint failed: ck_pedido_estado
+[OK] rechazado por UNIQUE: código de pedido repetido -> UNIQUE constraint failed: pedido.codigo
+[OK] rechazado por FOREIGN KEY: pedido a dirección que no existe para ese cliente -> FOREIGN KEY constraint failed
+[OK] rechazado por FOREIGN KEY: producto con categoría inexistente -> FOREIGN KEY constraint failed
+[OK] rechazado por CHECK: abono sin pedido -> CHECK constraint failed: ck_tp_abono_pedido
+[OK] rechazado por CHECK: cantidad 0 en detalle -> CHECK constraint failed: ck_det_cantidad
+[OK] rechazado por FOREIGN KEY: borrar categoría con productos (RESTRICT) -> FOREIGN KEY constraint failed
+[OK] rechazado por FOREIGN KEY: borrar producto vendido (RESTRICT) -> FOREIGN KEY constraint failed
+[OK] rechazado por FOREIGN KEY: borrar cliente con pedidos (RESTRICT) -> FOREIGN KEY constraint failed
+[FALLA] rechazado por motivo distinto (esperaba FOREIGN KEY): borrar pedido con puntos acreditados debe conservarse el historial -> CHECK constraint failed: ck_tp_abono_pedido
+[OK] alta de cliente sin pedidos para probar CASCADE
+[OK] dirección del cliente 2
+[OK] favorito del cliente 2
+[OK] borrar cliente 2 (CASCADE a direcciones y favoritos)
+[OK] CASCADE dejó 0 filas huérfanas
+RESULTADO: 1 falla(s)

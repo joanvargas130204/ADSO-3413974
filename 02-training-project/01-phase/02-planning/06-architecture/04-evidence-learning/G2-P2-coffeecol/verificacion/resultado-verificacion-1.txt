@@ -1,0 +1,7 @@
+CHEQUEOS OK: 33
+FALLAS: 5
+  FALLA: P1: clases de los componentes existen en el diagrama -> {'Clases que agrupa'}
+  FALLA: P2: SET NULL sobre transaccion_puntos.id_pedido no contradice un CHECK de obligatoriedad -> CONSTRAINT ck_tp_abono_pedido CHECK (tipo <> 'abono' OR id_pedido IS NOT NULL)
+  FALLA: P1↔P2: Usuario.correo existe como columna de administrador -> falta administrador.correo
+  FALLA: P1↔P2: DireccionEntrega.municipio existe como columna de direccion_entrega -> falta direccion_entrega.municipio
+  FALLA: P1↔P2: atributos de las clases mapeadas existen como columnas -> 
