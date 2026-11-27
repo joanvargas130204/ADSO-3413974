@@ -5,25 +5,24 @@
 - **Producto:** P2 modelo de análisis y verificación
 - **Usuario de GitHub del autor:** joanvargas130204
 - **Caso de estudio:** CoffeeCol / Tantico Café
-- **Trabajo en equipo del año:** sí. El SRS y las fichas de casos de uso las hizo el equipo de 3 aprendices (nombre del equipo: `________`). Lo individual aquí es el modelo de análisis (diagramas, plantillas, dominio, MER, prototipo) y su verificación.
+- **Trabajo en equipo del año:** sí. El SRS y las fichas de casos de uso las hizo el equipo de 3 aprendices (nombre del equipo: `CoffeeCol`). Lo individual aquí es el modelo de análisis (diagramas, plantillas, dominio, MER, prototipo) y su verificación.
 
 ## 2. Qué reutilicé
 
 | Artefacto | Ruta original | ¿Lo hice solo o en equipo? |
 |---|---|---|
-| Fichas de casos de uso CU-03, CU-06 y CU-11 (Apéndice B del SRS) | `SRS_CoffeeCol_IEEE830_SENA_ADSO.docx` (ruta en mi fork: `<completar>`) | Equipo |
+| Fichas de casos de uso CU-03, CU-06 y CU-11 (Apéndice B del SRS) | `SRS_CoffeeCol_IEEE830_SENA_ADSO.docx` (ruta en mi fork: `02-training-project/01-phase/01-analysis/02-requirements/04-evidence-learning/SRS_CoffeeCol_IEEE830_SENA_ADSO.docx`) | Equipo |
 | Requisitos RF-001 a RF-054 y RNF-001 a RNF-017 | Mismo documento | Equipo |
-| Identidad visual del mockup del año (tonos café, tarjetas) | `<completar: ruta del mockup en mi fork>` | Equipo |
 | Casos de uso CU-15 a CU-27 y relaciones include/extend | `../G1-P1-coffeecol/03-casos-de-uso.md` | Individual (P1) |
 
 ## 3. Qué ajusté
 
 | # | Artefacto | Qué cambié y por qué | Enlace al commit |
 |---|---|---|---|
-| 1 | Fichas CU-03, CU-06 y CU-11 → plantillas | Quité detalles de implementación (rutas, peticiones, transacciones, cookies) y los reescribí como intención del actor y respuesta del sistema; agregué las excepciones política de datos no aceptada y producto agotado | `<completar tras el commit>` |
-| 2 | Diagrama de iniciar sesión | Corregí el orden (método antes de contactar al servicio) y el enlace mágico, que pasaba por una aprobación que la plantilla no tiene (hallazgo 4) | `<completar tras el commit>` |
-| 3 | Modelo de dominio / MER | Quité la asociación Cliente–Nivel (el MER deduce el nivel de los puntos) y agregué el estado de Producto para poder retirarlo (hallazgos 2 y 3) | `<completar tras el commit>` |
-| 4 | Matriz de trazabilidad | Tracé Usuario a los requisitos de acceso y corregí el conteo de clases con 2 o más atributos (hallazgos 1 y 5) | `<completar tras el commit>` |
+| 1 | Fichas CU-03, CU-06 y CU-11 → plantillas | Quité detalles de implementación (rutas, peticiones, transacciones, cookies) y los reescribí como intención del actor y respuesta del sistema; agregué las excepciones política de datos no aceptada y producto agotado | [122922e](https://github.com/joanvargas130204/ADSO-3413974/commit/122922e796650795f2223d9d6ac5b685b1d538e3) |
+| 2 | Diagrama de iniciar sesión | Corregí el orden (método antes de contactar al servicio) y el enlace mágico, que pasaba por una aprobación que la plantilla no tiene (hallazgo 4) | [122922e](https://github.com/joanvargas130204/ADSO-3413974/commit/122922e796650795f2223d9d6ac5b685b1d538e3) |
+| 3 | Modelo de dominio / MER | Quité la asociación Cliente–Nivel (el MER deduce el nivel de los puntos) y agregué el estado de Producto para poder retirarlo (hallazgos 2 y 3) | [122922e](https://github.com/joanvargas130204/ADSO-3413974/commit/122922e796650795f2223d9d6ac5b685b1d538e3) |
+| 4 | Matriz de trazabilidad | Tracé Usuario a los requisitos de acceso y corregí el conteo de clases con 2 o más atributos (hallazgos 1 y 5) | [2254ac4](https://github.com/joanvargas130204/ADSO-3413974/commit/2254ac42caa3189e06bb52aad5cc71c9de1b025e) |
 
 ## 4. Qué construí nuevo
 

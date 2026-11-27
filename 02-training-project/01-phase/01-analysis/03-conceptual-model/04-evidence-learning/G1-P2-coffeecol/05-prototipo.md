@@ -1,6 +1,6 @@
 # 5. Prototipo inicial (mockup)
 
-Reutiliza la identidad visual del mockup del año (tonos café, vitrina con tarjetas) y agrega las tres pantallas de los casos críticos.
+Tres pantallas de los casos críticos, con la paleta café del SRS (#4A2E18, #C7A17A, #F5EBE1).
 
 | Pantalla | Caso(s) de uso que atiende | Archivos |
 |---|---|---|
