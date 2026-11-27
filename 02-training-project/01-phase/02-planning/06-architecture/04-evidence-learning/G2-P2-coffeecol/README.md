@@ -17,8 +17,8 @@
 |---|---|
 | ¿El SRS / informe de análisis lo elaboró un equipo? ¿Cuántas personas? | Sí, un equipo de 3 aprendices (nombre del equipo: CoffeeCol) |
 | ¿Qué parte del SRS es tuya? | El SRS lo elaboramos entre los 3 integrantes del equipo; no separo una parte individual |
-| ¿Los artefactos de esta entrega los hiciste tú solo? | `<completar: Sí / No; la autoría de los productos de diseño es individual>` |
-| ¿Otro aprendiz usó o te compartió archivos de esta entrega? | `<completar>` |
+| ¿Los artefactos de esta entrega los hiciste tú solo? | Los elaboré con Claude (ver sección 6) a partir del SRS del equipo; la autoría de los productos de diseño es individual |
+| ¿Otro aprendiz usó o te compartió archivos de esta entrega? | El SRS y el proyecto CoffeeCol los hicimos entre los 3 integrantes del equipo, con apoyo de IA; como partimos del mismo caso, los compañeros pueden tener productos parecidos |
 
 **Subconjunto que diseño (individual):** 17 requisitos funcionales del SRS (RF-011, 012, 014, 017, 018, 019, 020, 021, 022, 023, 024, 025, 027, 028, 038, 045, 046), los que sostienen los casos críticos CU-03, CU-06 y CU-11 del análisis, y 8 RNF (004, 005, 006, 008, 009, 010, 013, 016). El modelo de datos (P2) cubre todo el sistema.
 
@@ -58,19 +58,19 @@
 
 | Día | Qué avancé (mensaje del commit) |
 |---|---|
-| `<completar: fecha del 1.er push>` | `<completar>` |
-| `<completar: fecha del 2.º push>` | `<completar>` |
+| 25 de noviembre de 2026 | Contenido de los artefactos de diseño o de datos (6 commits) |
+| 27 de noviembre de 2026 | README, SRS en el fork y carpeta de verificación |
 
 ## 6. Uso de inteligencia artificial (declaración obligatoria)
 
 | Herramienta | Para qué la usé | Qué verifiqué o cambié después |
 |---|---|---|
-| Claude (Anthropic) | Proponer, a partir de mi SRS y de mi modelo de análisis de G1, el modelo conceptual y lógico, el diccionario, el script SQL con sus pruebas, las políticas de seguridad y la lista de chequeo con su verificador | `<completar: qué revisé, qué cambié y qué puedo explicar sin mirar>` |
+| Claude (Anthropic) | Proponer, a partir de mi SRS y de mi modelo de análisis de G1, el modelo conceptual y lógico, el diccionario, el script SQL con sus pruebas, las políticas de seguridad y la lista de chequeo con su verificador | Revisé los diagramas. |
 
 ## 7. Enlaces
 
 - Informe de análisis / SRS del caso: `02-training-project/01-phase/01-analysis/02-requirements/04-evidence-learning/SRS_CoffeeCol_IEEE830_SENA_ADSO.docx`
-- Carpeta de esta entrega en GitHub: `<completar tras el push>`
+- Carpeta de esta entrega en GitHub: https://github.com/joanvargas130204/ADSO-3413974/tree/main/02-training-project/01-phase/02-planning/06-architecture/04-evidence-learning/G2-P2-coffeecol
 
 ## 8. Declaración de autoría
 

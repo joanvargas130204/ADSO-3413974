@@ -55,7 +55,7 @@ Firma (usuario de GitHub y fecha): `joanvargas130204 · __ de noviembre de 2026`
 
 | Herramienta | Para qué la usé | Qué verifiqué o corregí yo |
 |---|---|---|
-| Claude (Anthropic) | Resumir el SRS en tablas, proponer los casos de soporte, la comparación de metodologías, el plan y el diagrama (Graphviz) a partir de mi SRS | `<completar: qué revisé y qué cambié>` |
+| Claude (Anthropic) | Resumir el SRS en tablas, proponer los casos de soporte, la comparación de metodologías, el plan y el diagrama (Graphviz) a partir de mi SRS | Revisé los diagramas. |
 
 ## 8. Autocontrol antes del push
 

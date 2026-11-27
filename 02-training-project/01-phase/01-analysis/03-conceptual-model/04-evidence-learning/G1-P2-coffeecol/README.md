@@ -56,7 +56,7 @@ Firma (usuario de GitHub y fecha): `joanvargas130204 · __ de noviembre de 2026`
 
 | Herramienta | Para qué la usé | Qué verifiqué o corregí yo |
 |---|---|---|
-| Claude (Anthropic) | Proponer los diagramas, las plantillas, el modelo de dominio, el MER, el prototipo y el script de verificación a partir de mi SRS | `<completar: qué revisé y qué cambié>` |
+| Claude (Anthropic) | Proponer los diagramas, las plantillas, el modelo de dominio, el MER, el prototipo y el script de verificación a partir de mi SRS | Revisé los diagramas. |
 
 ## 8. Autocontrol antes del push
 
