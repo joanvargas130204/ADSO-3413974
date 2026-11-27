@@ -49,7 +49,7 @@
 - [ ] Declaro que lo que tomé de mi equipo o de otra fuente está identificado en la sección 2.
 - [ ] Entiendo que el sábado 28 de noviembre de 2026 el instructor me hará **3 preguntas orales** sobre mis productos y que, si respondo bien menos de 2, el producto sobre el que fallé queda con tope de 50.
 
-Firma (usuario de GitHub y fecha): `joanvargas130204 · __ de noviembre de 2026`
+Firma (usuario de GitHub y fecha): `joanvargas130204 · 27 de noviembre de 2026`
 
 ## 7. Uso de inteligencia artificial
 
