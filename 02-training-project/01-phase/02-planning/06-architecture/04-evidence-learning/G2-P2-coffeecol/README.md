@@ -44,13 +44,13 @@
 
 > Marca con `x` solo lo que de verdad cumples. El instructor lo contrasta con los archivos.
 
-- [ ] B1 Modelo conceptual: ≥ 6 entidades, cardinalidades, ≥ 1 N:M y ≥ 1 1:N
-- [ ] B2 Modelo lógico: ≥ 8 tablas con PK/FK y cuadro de reglas de transformación
-- [ ] B3 Normalización: ≥ 2 tablas de 0FN a 3FN con dependencias funcionales (una con llave compuesta y una con dependencia transitiva)
-- [ ] B4 Diccionario de datos completo
-- [ ] B5 Script SQL ejecutado sin errores (evidencia adjunta) y `ON DELETE` en ≥ 3 FK
-- [ ] B6 ≥ 6 políticas de seguridad (con hash y sal en contraseñas y TLS) y matriz de ≥ 3 roles
-- [ ] B7 Lista de chequeo de ≥ 20 criterios, diligenciada sobre P1 y P2, con evidencia
+- [x] B1 Modelo conceptual: ≥ 6 entidades, cardinalidades, ≥ 1 N:M y ≥ 1 1:N
+- [x] B2 Modelo lógico: ≥ 8 tablas con PK/FK y cuadro de reglas de transformación
+- [x] B3 Normalización: ≥ 2 tablas de 0FN a 3FN con dependencias funcionales (una con llave compuesta y una con dependencia transitiva)
+- [x] B4 Diccionario de datos completo
+- [x] B5 Script SQL ejecutado sin errores (evidencia adjunta) y `ON DELETE` en ≥ 3 FK
+- [x] B6 ≥ 6 políticas de seguridad (con hash y sal en contraseñas y TLS) y matriz de ≥ 3 roles
+- [x] B7 Lista de chequeo de ≥ 20 criterios, diligenciada sobre P1 y P2, con evidencia
 
 **Nota sobre el motor:** la evidencia de pruebas (inserciones válidas y 16 violaciones rechazadas) es de **SQLite 3.53**. Además, el script de MariaDB se ejecutó completo el 27/11/2026 en **MariaDB 10.4.32 (XAMPP)** sin errores: 15 tablas InnoDB, 14 FK y 20 CHECK (ver `verificacion/evidencia-mariadb.txt` y `verificacion/captura-mariadb-phpmyadmin.jpg`).
 

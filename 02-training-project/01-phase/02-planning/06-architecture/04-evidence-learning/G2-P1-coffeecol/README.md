@@ -44,14 +44,14 @@
 
 > Marca con `x` solo lo que de verdad cumples. El instructor lo contrasta con los archivos.
 
-- [ ] A1 Ficha de interpretación: ≥ 8 RF y ≥ 3 RNF con ID; plataforma justificada
-- [ ] A2 Diagrama de clases: ≥ 8 clases, tipos, métodos, multiplicidades, ≥ 1 composición/agregación y ≥ 1 herencia o interfaz (con ≥ 2 implementaciones)
-- [ ] A3 ≥ 2 patrones GoF distintos aplicados en el diagrama (al menos uno distinto de singleton)
-- [ ] A4 Arquitectura con diagrama y tabla de ≥ 3 RNF → decisión
-- [ ] A5 Vista de componentes: ≥ 5 componentes con interfaces
-- [ ] A6 Vista de despliegue: ≥ 3 nodos con artefactos y protocolos
-- [ ] A7 Matriz de trazabilidad análisis → diseño
-- [ ] Fuente editable e imagen exportada de cada diagrama
+- [x] A1 Ficha de interpretación: ≥ 8 RF y ≥ 3 RNF con ID; plataforma justificada
+- [x] A2 Diagrama de clases: ≥ 8 clases, tipos, métodos, multiplicidades, ≥ 1 composición/agregación y ≥ 1 herencia o interfaz (con ≥ 2 implementaciones)
+- [x] A3 ≥ 2 patrones GoF distintos aplicados en el diagrama (al menos uno distinto de singleton)
+- [x] A4 Arquitectura con diagrama y tabla de ≥ 3 RNF → decisión
+- [x] A5 Vista de componentes: ≥ 5 componentes con interfaces
+- [x] A6 Vista de despliegue: ≥ 3 nodos con artefactos y protocolos
+- [x] A7 Matriz de trazabilidad análisis → diseño
+- [x] Fuente editable e imagen exportada de cada diagrama
 
 ## 5. Historial de commits
 

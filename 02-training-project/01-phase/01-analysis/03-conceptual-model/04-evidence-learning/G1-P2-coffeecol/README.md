@@ -60,6 +60,6 @@ Firma (usuario de GitHub y fecha): `joanvargas130204 · __ de noviembre de 2026`
 
 ## 8. Autocontrol antes del push
 
-- [ ] Hice commits propios en al menos 2 días distintos entre el 21 y el 28 de noviembre.
-- [ ] No subí el marco documental del instructor, plantillas sin diligenciar ni archivos de otras personas.
-- [ ] Hice `push` y comprobé en GitHub que la carpeta está publicada.
+- [x] Hice commits propios en al menos 2 días distintos entre el 21 y el 28 de noviembre.
+- [x] No subí el marco documental del instructor, plantillas sin diligenciar ni archivos de otras personas.
+- [x] Hice `push` y comprobé en GitHub que la carpeta está publicada.
