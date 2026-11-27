@@ -75,4 +75,4 @@
 
 Declaro que los artefactos de esta carpeta son de mi autoría, que lo que reutilicé de mi trabajo del año o de otras fuentes está indicado en la sección 3, que no entregué como propio material del instructor ni de otros aprendices, y que puedo explicar cada artefacto en la verificación oral.
 
-Usuario de GitHub: joanvargas130204  Fecha: `<completar>`
+Usuario de GitHub: joanvargas130204  Fecha: 27/11/2026
