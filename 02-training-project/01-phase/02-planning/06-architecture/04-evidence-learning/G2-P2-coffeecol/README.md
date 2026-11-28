@@ -15,7 +15,7 @@
 
 | Pregunta | Respuesta |
 |---|---|
-| ¿El SRS / informe de análisis lo elaboró un equipo? ¿Cuántas personas? | Sí, un equipo de 3 aprendices (nombre del equipo: CoffeeCol) |
+| ¿El SRS / informe de análisis lo elaboró un equipo? ¿Cuántas personas? | Sí, un equipo de 3 aprendices (nombre del equipo: CoffeeCol; integrantes: Joan Sebastian Vargas Ramos, Adrian Estiben Garrido Pedroza y Juan Matias Palacios Botello) |
 | ¿Qué parte del SRS es tuya? | El SRS lo elaboramos entre los 3 integrantes del equipo; no separo una parte individual |
 | ¿Los artefactos de esta entrega los hiciste tú solo? | Los elaboré con Claude (ver sección 6) a partir del SRS del equipo; la autoría de los productos de diseño es individual |
 | ¿Otro aprendiz usó o te compartió archivos de esta entrega? | El SRS y el proyecto CoffeeCol los hicimos entre los 3 integrantes del equipo, con apoyo de IA; como partimos del mismo caso, los compañeros pueden tener productos parecidos |

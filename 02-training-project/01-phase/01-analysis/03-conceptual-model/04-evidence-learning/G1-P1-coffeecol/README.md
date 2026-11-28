@@ -5,7 +5,7 @@
 - **Producto:** P1 plan de análisis y casos de uso
 - **Usuario de GitHub del autor:** joanvargas130204
 - **Caso de estudio:** CoffeeCol / Tantico Café, plataforma e-commerce de café colombiano de especialidad
-- **Trabajo en equipo del año:** sí. El SRS y sus casos de uso base los hizo el equipo de 3 aprendices (nombre del equipo: `CoffeeCol`). Lo individual aquí es el ajuste: la caracterización y selección de metodología, el plan, la matriz de cobertura, el diagrama y las relaciones «include» y «extend».
+- **Trabajo en equipo del año:** sí. El SRS y sus casos de uso base los hizo el equipo de 3 aprendices (nombre del equipo: `CoffeeCol`; integrantes: Joan Sebastian Vargas Ramos, Adrian Estiben Garrido Pedroza y Juan Matias Palacios Botello). Lo individual aquí es el ajuste: la caracterización y selección de metodología, el plan, la matriz de cobertura, el diagrama y las relaciones «include» y «extend».
 
 ## 2. Qué reutilicé
 

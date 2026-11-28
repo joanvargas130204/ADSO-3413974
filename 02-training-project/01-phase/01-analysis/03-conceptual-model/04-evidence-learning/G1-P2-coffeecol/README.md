@@ -5,7 +5,7 @@
 - **Producto:** P2 modelo de análisis y verificación
 - **Usuario de GitHub del autor:** joanvargas130204
 - **Caso de estudio:** CoffeeCol / Tantico Café
-- **Trabajo en equipo del año:** sí. El SRS y las fichas de casos de uso las hizo el equipo de 3 aprendices (nombre del equipo: `CoffeeCol`). Lo individual aquí es el modelo de análisis (diagramas, plantillas, dominio, MER, prototipo) y su verificación.
+- **Trabajo en equipo del año:** sí. El SRS y las fichas de casos de uso las hizo el equipo de 3 aprendices (nombre del equipo: `CoffeeCol`; integrantes: Joan Sebastian Vargas Ramos, Adrian Estiben Garrido Pedroza y Juan Matias Palacios Botello). Lo individual aquí es el modelo de análisis (diagramas, plantillas, dominio, MER, prototipo) y su verificación.
 
 ## 2. Qué reutilicé
 
